@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSIS 118B Tools</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:         #4c5570;
+    --ink-soft:    #8089a8;
+    --line:        #d3e0f2;
+    --line-strong: #a9c2e4;
+    --paper:       #fcfdff;
+    --face:        #f2f7fd;
+    --sky:         #bcd4f2;
+    --sky-deep:    #5b87d6;
+    --lavender:    #b7a6ea;
+    --blue:        #8fb3f0;
+    --mint:        #93dcb2;
+    --butter:      #ffd98e;
+    --code-bg:     #2c3452;
+    --code-text:   #eef2fc;
+    --ui:   'Trebuchet MS', 'Segoe UI', Verdana, sans-serif;
+    --mono: 'Courier New', Courier, monospace;
+  }
+
+  body {
+    font-family: var(--ui);
+    color: var(--ink);
+    background-image:
+      radial-gradient(rgba(255,255,255,0.45) 1.2px, transparent 1.7px),
+      linear-gradient(180deg, #bfd6f8 0%, #d6e2f9 55%, #eadff4 100%);
+    background-size: 20px 20px, 100% 100%;
+    background-attachment: fixed;
+    min-height: 100vh;
+    padding: 26px 14px 60px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .raised {
+    background: var(--face);
+    border: 2px solid var(--line-strong);
+    border-radius: 16px;
+  }
+  .sunken {
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+  }
+
+  /* ── main window ── */
+  .main-window {
+    width: 100%; max-width: 980px;
+    box-shadow: 0 14px 34px rgba(86, 105, 150, 0.28);
+    overflow: hidden;
+  }
+
+  /* classic Mac pinstriped title bar with traffic-light controls */
+  .title-bar {
+    background: repeating-linear-gradient(180deg, var(--sky) 0 2px, #fff 2px 5px);
+    display: flex; align-items: center;
+    padding: 6px 10px;
+    user-select: none;
+  }
+  .title-bar-text {
+    flex: 1; text-align: center;
+    font-size: 13px; font-weight: bold; color: var(--ink);
+  }
+  .title-bar-text span {
+    background: #fff; padding: 1px 14px; border-radius: 8px; display: inline-block;
+  }
+  .window-controls,
+  .title-spacer {
+    width: 52px;
+    flex-shrink: 0;
+  }
+  .window-controls {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .window-dot {
+    width: 12px;
+    height: 12px;
+    border: 1px solid rgba(76, 85, 112, 0.32);
+    border-radius: 50%;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.65);
+  }
+  .window-dot.red { background: #ff6b67; }
+  .window-dot.yellow { background: #ffd166; }
+  .window-dot.green { background: #63d471; }
+  .title-bar:hover .window-dot { filter: saturate(1.1) brightness(1.02); }
+
+  .menu-bar {
+    display: flex; gap: 18px; align-items: center;
+    padding: 5px 16px;
+    background: #fff;
+    border-bottom: 1.5px solid var(--line);
+    font-size: 13px; font-weight: bold; color: var(--ink);
+    user-select: none;
+  }
+  .menu-bar span { cursor: default; }
+  .menu-bar .apple { color: var(--sky-deep); }
+
+  .window-body { padding: 16px; }
+
+  /* ── intro strip ── */
+  .intro {
+    background: var(--paper);
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    font-size: 13px; color: var(--ink); line-height: 1.55;
+  }
+  .intro h1 {
+    font-size: 18px; margin-bottom: 4px; color: var(--sky-deep);
+    letter-spacing: 0.02em;
+  }
+  .intro .sub { color: var(--ink-soft); }
+
+  /* ── tile grid ── */
+  .tile-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 16px;
+  }
+  @media (max-width: 900px) {
+    .tile-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── tool tile (a mini window) ── */
+  .tile {
+    background: var(--face);
+    border: 2px solid var(--line-strong);
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(86, 105, 150, 0.2);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .tile .title-bar { padding: 5px 8px; }
+  .tile .title-bar-text { font-size: 12px; }
+  .tile .window-controls,
+  .tile .title-spacer { width: 48px; }
+  .tile .window-dot { width: 11px; height: 11px; }
+  .tile-body { padding: 12px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+
+  .unit-tag {
+    display: inline-block; align-self: flex-start;
+    font-size: 11px; font-weight: bold; letter-spacing: 0.08em;
+    background: var(--sky-deep); color: #fff;
+    padding: 3px 12px; border-radius: 999px;
+  }
+
+  .tile-desc {
+    font-size: 13px; color: var(--ink); line-height: 1.55;
+    background: var(--paper);
+    padding: 9px 12px;
+  }
+
+  .demo-list {
+    background: var(--paper);
+    padding: 8px 12px;
+    font-size: 12.5px; line-height: 1.75;
+    color: var(--ink);
+  }
+  .demo-list .dl-head {
+    font-weight: bold; font-size: 10.5px; letter-spacing: 0.08em;
+    color: var(--ink-soft); margin-bottom: 2px;
+  }
+  .demo-list ul { list-style: none; }
+  .demo-list li::before { content: '\273F  '; color: var(--sky-deep); }
+  .demo-list li code {
+    font-family: var(--mono); color: #7d5fc7; font-weight: bold;
+  }
+
+  /* ── embed panel ── */
+  .embed-label {
+    font-size: 10.5px; font-weight: bold; letter-spacing: 0.08em;
+    color: var(--ink-soft); display: flex; align-items: center;
+    justify-content: space-between; gap: 8px;
+  }
+  .embed-panel {
+    background: var(--code-bg);
+    border-color: #3d4767;
+    padding: 9px 12px;
+    overflow-x: auto;
+  }
+  .embed-panel code {
+    font-family: var(--mono); font-size: 12px;
+    color: var(--code-text); white-space: pre;
+    display: block; line-height: 1.5;
+  }
+
+  /* ── buttons ── */
+  .tile-actions { display: flex; gap: 8px; align-items: center; }
+  .win-btn {
+    font-family: var(--ui); font-size: 12.5px; font-weight: bold;
+    background: #fff; color: var(--ink);
+    border: 1.5px solid var(--line-strong);
+    border-radius: 9px;
+    padding: 5px 14px; cursor: pointer;
+    white-space: nowrap; text-align: center; outline: none;
+    box-shadow: 0 2px 0 var(--line-strong);
+    text-decoration: none; display: inline-block;
+  }
+  .win-btn:active { transform: translateY(2px); box-shadow: none; }
+  .win-btn:focus { outline: 2px dotted var(--lavender); outline-offset: 1px; }
+  .win-btn.primary {
+    background: var(--sky-deep); color: #fff;
+    border-color: #4a72bd; box-shadow: 0 2px 0 #4a72bd;
+  }
+  .win-btn.small { font-size: 11px; padding: 2px 10px; }
+
+  /* ── coming-soon tile ── */
+  .tile.soon {
+    border-style: dashed;
+    box-shadow: none;
+  }
+  .tile.soon .title-bar {
+    background: repeating-linear-gradient(180deg, #d9e2f3 0 2px, #fff 2px 5px);
+  }
+  .tile.soon .tile-desc { color: var(--ink-soft); font-style: italic; }
+
+  /* ── status bar ── */
+  .status-bar {
+    margin-top: 16px;
+    display: flex; gap: 6px;
+  }
+  .status-cell {
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 14px; font-size: 12px; color: var(--ink-soft);
+    background: #fff;
+  }
+  .status-cell.grow { flex: 1; }
+
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .cursor { animation: blink 1s step-start infinite; }
+</style>
+</head>
+<body>
+
+<div class="main-window raised">
+  <div class="title-bar">
+    <div class="window-controls" aria-hidden="true">
+      <span class="window-dot red"></span>
+      <span class="window-dot yellow"></span>
+      <span class="window-dot green"></span>
+    </div>
+    <div class="title-bar-text"><span>&#10047; CSIS 118B Tools &#10047;</span></div>
+    <div class="title-spacer" aria-hidden="true"></div>
+  </div>
+
+  <div class="menu-bar">
+    <span class="apple">&#10047;</span><span>File</span><span>Edit</span><span>View</span><span>Special</span>
+  </div>
+
+  <div class="window-body">
+    <div class="intro sunken">
+      <h1>CSIS 118B &#9656; Tools <span class="cursor">&#9646;</span></h1>
+      <div class="sub">
+        Interactive, step-by-step tools for CSIS 118B (Computer Organization and Assembly).
+        Each tool runs entirely in the browser as a single self-contained HTML file &mdash;
+        launch it full-page, or copy the embed code to drop it into Canvas or any web page.
+      </div>
+    </div>
+
+    <div class="tile-grid" id="tile-grid"></div>
+
+    <div class="status-bar">
+      <div class="status-cell grow" id="status-msg">Ready.</div>
+      <div class="status-cell" id="tool-count"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── tool catalog ────────────────────────────────────────────────────────────
+// To add a new tool: drop its HTML file in visualizers/ and add an entry here.
+var TOOLS = [
+];
+
+// ─── embed URL: resolve against where this page is actually hosted ──────────
+// When browsed from GitHub Pages the snippet points at the live site; when
+// opened locally it falls back to the published GitHub Pages URL so copied
+// embed code always works.
+var SITE_BASE = 'https://dinocrates.github.io/CSIS-118B-Tools/';
+function embedUrl(file) {
+  if (location.protocol === 'http:' || location.protocol === 'https:') {
+    return new URL(file, location.href).href;
+  }
+  return SITE_BASE + file;
+}
+function embedSnippet(tool) {
+  return '<iframe src="' + embedUrl(tool.file) + '"\n' +
+         '        width="100%" height="' + tool.embedHeight + '"\n' +
+         '        style="border:none;" title="' + tool.title + '"></iframe>';
+}
+
+function esc(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── build tiles ─────────────────────────────────────────────────────────────
+var grid = document.getElementById('tile-grid');
+
+TOOLS.forEach(function(tool, i) {
+  var tile = document.createElement('div');
+  tile.className = 'tile';
+
+  var demoItems = tool.demos.map(function(d) {
+    return '<li><code>' + esc(d.sig) + '</code> &mdash; ' + esc(d.what) + '</li>';
+  }).join('');
+
+  tile.innerHTML =
+    '<div class="title-bar">' +
+      '<div class="window-controls" aria-hidden="true">' +
+        '<span class="window-dot red"></span>' +
+        '<span class="window-dot yellow"></span>' +
+        '<span class="window-dot green"></span>' +
+      '</div>' +
+      '<div class="title-bar-text"><span>' + esc(tool.title) + '</span></div>' +
+      '<div class="title-spacer" aria-hidden="true"></div>' +
+    '</div>' +
+    '<div class="tile-body">' +
+      '<span class="unit-tag">' + esc(tool.unit) + '</span>' +
+      '<div class="tile-desc sunken">' + esc(tool.desc) + '</div>' +
+      '<div class="demo-list sunken">' +
+        '<div class="dl-head">INCLUDED DEMOS:</div>' +
+        '<ul>' + demoItems + '</ul>' +
+      '</div>' +
+      '<div class="embed-label">EMBED CODE:' +
+        '<button class="win-btn small" data-copy="' + i + '">&#9744; Copy</button>' +
+      '</div>' +
+      '<div class="embed-panel sunken"><code id="embed-' + i + '">' + esc(embedSnippet(tool)) + '</code></div>' +
+      '<div class="tile-actions">' +
+        '<a class="win-btn primary" href="' + tool.file + '">&#9654; Launch</a>' +
+        '<a class="win-btn" href="' + tool.file + '" target="_blank" rel="noopener">New window</a>' +
+      '</div>' +
+    '</div>';
+
+  grid.appendChild(tile);
+});
+
+// coming-soon placeholder tile
+var soon = document.createElement('div');
+soon.className = 'tile soon';
+soon.innerHTML =
+  '<div class="title-bar">' +
+    '<div class="window-controls" aria-hidden="true">' +
+      '<span class="window-dot red"></span>' +
+      '<span class="window-dot yellow"></span>' +
+      '<span class="window-dot green"></span>' +
+    '</div>' +
+    '<div class="title-bar-text"><span>&#9729; Next Tool</span></div>' +
+    '<div class="title-spacer" aria-hidden="true"></div>' +
+  '</div>' +
+  '<div class="tile-body">' +
+    '<span class="unit-tag" style="background:#9aa8c9">COMING SOON</span>' +
+    '<div class="tile-desc sunken">The next tool will appear here. ' +
+    'Drop a new HTML file in visualizers/ and register it in the TOOLS list on this page.</div>' +
+  '</div>';
+grid.appendChild(soon);
+
+document.getElementById('tool-count').textContent =
+  TOOLS.length + ' tool' + (TOOLS.length === 1 ? '' : 's') + ' installed';
+
+// ─── copy-to-clipboard ───────────────────────────────────────────────────────
+var statusMsg = document.getElementById('status-msg');
+document.querySelectorAll('[data-copy]').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var i = btn.getAttribute('data-copy');
+    var text = document.getElementById('embed-' + i).textContent;
+    function done() {
+      btn.innerHTML = '&#9745; Copied!';
+      statusMsg.textContent = 'Embed code copied to clipboard.';
+      setTimeout(function() {
+        btn.innerHTML = '&#9744; Copy';
+        statusMsg.textContent = 'Ready.';
+      }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function() { fallbackCopy(text, done); });
+    } else {
+      fallbackCopy(text, done);
+    }
+  });
+});
+function fallbackCopy(text, done) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); }
+  catch (e) { statusMsg.textContent = 'Copy failed — select the code and copy manually.'; }
+  document.body.removeChild(ta);
+}
+</script>
+</body>
+</html>
