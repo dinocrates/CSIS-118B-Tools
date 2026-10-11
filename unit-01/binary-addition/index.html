@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Addition with Carries — CSIS 118B Unit 1</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main>
+  <div class="tool-header">
+    <h1>Binary Addition with Carries</h1>
+    <p class="tool-sub">Add two fixed-width binary numbers one column at a time, tracking the carry as it moves left.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Set the width and two operands, then predict the result before revealing it.</li>
+      <li><strong>Next column</strong> processes one column (right to left) and shows its carry in, total, written bit, and carry out.</li>
+      <li>After all columns are revealed, the result summary explains carry-out and signed overflow — two different things.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Set up the problem</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="width-select">Width</label>
+        <select id="width-select">
+          <option value="8" selected>8 bits</option>
+          <option value="4">4 bits</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="operand-a">Operand A (unsigned decimal)</label>
+        <input type="text" id="operand-a" inputmode="numeric" autocomplete="off" value="11">
+      </div>
+      <div class="field">
+        <label for="operand-b">Operand B (unsigned decimal)</label>
+        <input type="text" id="operand-b" inputmode="numeric" autocomplete="off" value="12">
+      </div>
+      <button type="button" class="btn primary" id="apply-btn">Apply operands</button>
+    </div>
+    <p class="tool-sub" id="range-hint" style="margin:0 0 0.4rem;"></p>
+    <p class="error-text" id="setup-error" role="alert"></p>
+
+    <div class="preset-row" role="group" aria-label="Preset problems">
+      <button type="button" class="btn" data-preset-a="11" data-preset-b="12" data-preset-w="8">11 + 12 (8-bit)</button>
+      <button type="button" class="btn" data-preset-a="255" data-preset-b="1" data-preset-w="8">255 + 1 (8-bit)</button>
+      <button type="button" class="btn" data-preset-a="127" data-preset-b="1" data-preset-w="8">127 + 1 (8-bit)</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="operands-h">
+    <h2 id="operands-h">Operand interpretations</h2>
+    <div class="readout-grid">
+      <div class="readout">
+        <span class="readout-label">A — unsigned</span>
+        <span class="readout-value" id="out-a-unsigned">11</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">A — signed</span>
+        <span class="readout-value" id="out-a-signed">11</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">B — unsigned</span>
+        <span class="readout-value" id="out-b-unsigned">12</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">B — signed</span>
+        <span class="readout-value" id="out-b-signed">12</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="trace-h">
+    <h2 id="trace-h">Predict, then step through the columns</h2>
+    <p class="tool-sub" id="predict-hint" style="margin:0 0 0.6rem;">Result bits are hidden as "?" until you reveal them. Predict each one before clicking Next column.</p>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="next-col-btn">Next column &rarr;</button>
+      <button type="button" class="btn" id="show-all-btn">Show all</button>
+      <button type="button" class="btn" id="start-over-btn">Start over</button>
+    </div>
+    <p id="current-col-line" class="tool-sub" style="font-weight:600; color:var(--charcoal);"></p>
+    <div class="table-scroll">
+      <table class="trace-table" id="trace-table">
+        <caption>Columns run right to left, least significant bit first. The highlighted column is the one about to be (or just) processed.</caption>
+        <tbody id="trace-tbody"></tbody>
+      </table>
+    </div>
+    <div class="status-line" id="status-line" role="status" aria-live="polite">Ready. Predict the result, then click Next column.</div>
+  </section>
+
+  <section class="panel" aria-labelledby="summary-h" id="summary-panel" hidden>
+    <h2 id="summary-h">Result summary</h2>
+    <div class="readout-grid">
+      <div class="readout">
+        <span class="readout-label">Unrestricted exact sum</span>
+        <span class="readout-value" id="out-exact-sum">0</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Stored pattern (fixed width)</span>
+        <span class="readout-value" id="out-stored-bin">0</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Stored — hex</span>
+        <span class="readout-value" id="out-stored-hex">0</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Stored — unsigned decimal</span>
+        <span class="readout-value" id="out-stored-unsigned">0</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Carry out of the MSB</span>
+        <span class="readout-value" id="out-carry-out">0</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Result — signed decimal</span>
+        <span class="readout-value" id="out-result-signed">0</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Signed overflow?</span>
+        <span class="readout-value" id="out-signed-overflow">No</span>
+      </div>
+    </div>
+    <div class="explain-box" id="summary-explain"></div>
+  </section>
+
+  <div class="tool-footer">CSIS 118B &middot; Binary Addition with Carries &middot; part of the Unit 1 tool set.</div>
+</main>
+
+<script src="../shared/bit-utils.js"></script>
+<script src="../shared/addition-utils.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Byte Explorer — CSIS 118B Unit 1</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main>
+  <div class="tool-header">
+    <h1>Byte Explorer</h1>
+    <p class="tool-sub">Build an 8-bit pattern and read it four ways: binary, hex, unsigned decimal, and signed two's-complement decimal.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Click any bit button below to flip it, or load a value by decimal, binary, or hex.</li>
+      <li>Watch all four representations update together — they are the same 8 bits, read four ways.</li>
+      <li>Use <strong>Two's-complement negate</strong> to see invert-then-add-one step by step.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="load-h">
+    <h2 id="load-h">Load a value</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="base-select">Number base</label>
+        <select id="base-select">
+          <option value="dec">Decimal (0–255)</option>
+          <option value="bin">Binary (1–8 digits, 0b optional)</option>
+          <option value="hex">Hex (1–2 digits, 0x optional)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="load-input" id="load-input-label">Decimal value</label>
+        <input type="text" id="load-input" inputmode="text" autocomplete="off" aria-describedby="load-example">
+      </div>
+      <button type="button" class="btn primary" id="load-btn">Load</button>
+      <button type="button" class="btn" id="reset-btn">Reset</button>
+    </div>
+    <p class="tool-sub" id="load-example" style="margin:0 0 0.4rem;">Example: 38</p>
+    <p class="error-text" id="load-error" role="alert"></p>
+
+    <div class="preset-row" role="group" aria-label="Preset values">
+      <button type="button" class="btn" data-preset="0">0</button>
+      <button type="button" class="btn" data-preset="38">38</button>
+      <button type="button" class="btn" data-preset="127">127</button>
+      <button type="button" class="btn" data-preset="128">128</button>
+      <button type="button" class="btn" data-preset="183">183</button>
+      <button type="button" class="btn" data-preset="245">245</button>
+      <button type="button" class="btn" data-preset="255">255</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="bits-h">
+    <h2 id="bits-h">Bit pattern (click a bit to flip it)</h2>
+    <div class="bit-grid" id="bit-grid" role="group" aria-label="Eight bits, bit 7 (most significant) through bit 0 (least significant)"></div>
+    <p class="tool-sub" style="margin:0.4rem 0 0;">Bits 7–4 are the high nibble; bits 3–0 are the low nibble. This is one stored pattern — the representations below are just different ways of reading it.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="repr-h">
+    <h2 id="repr-h">Representations of the current pattern</h2>
+    <div class="readout-grid">
+      <div class="readout">
+        <span class="readout-label">Binary (8 bits)</span>
+        <span class="readout-value" id="out-binary">00000000</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Hexadecimal</span>
+        <span class="readout-value" id="out-hex">0x00</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Unsigned decimal</span>
+        <span class="readout-value" id="out-unsigned">0</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Signed decimal (two's complement)</span>
+        <span class="readout-value" id="out-signed">0</span>
+      </div>
+    </div>
+    <div class="explain-box" id="signed-explain" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="sum-h">
+    <h2 id="sum-h">Place-value sum (unsigned)</h2>
+    <p class="tool-sub" id="sum-line" style="font-family:Consolas,monospace; margin:0 0 0.4rem;"></p>
+    <p class="tool-sub" style="margin:0;">Signed reading: if bit 7 is 1, the weight of bit 7 is <strong>&minus;128</strong> instead of +128, and the signed value equals the unsigned value minus 256. If bit 7 is 0, the signed and unsigned values are identical.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="negate-h">
+    <h2 id="negate-h">Two's-complement negate</h2>
+    <p class="tool-sub" style="margin:0 0 0.6rem;">Shows invert-all-bits, then add one, on the <em>current</em> pattern above.</p>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="negate-btn">Negate current value</button>
+    </div>
+    <div id="negate-trace" aria-live="polite"></div>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite">Ready. Current value: unsigned 38, signed 38.</div>
+
+  <div class="tool-footer">CSIS 118B &middot; Byte Explorer &middot; part of the Unit 1 tool set.</div>
+</main>
+
+<script src="../shared/bit-utils.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

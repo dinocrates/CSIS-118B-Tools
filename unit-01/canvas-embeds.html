@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Embeds — Unit 1 — CSIS 118B</title>
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .embed-code {
+    background: var(--charcoal);
+    color: #eef2fc;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 0.8rem 0.9rem;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+  }
+  .preview-frame {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="course-header">
+    <span>CSIS 118B &middot; Computer Organization &amp; Assembly</span>
+    <a href="index.html">&larr; Unit 1 tools index</a>
+  </div>
+
+  <div class="tool-header">
+    <h1>Canvas Embeds — Unit 1</h1>
+    <p class="tool-sub">Copy an iframe snippet into the Canvas Rich Content Editor's HTML view, or use the fallback link if your Canvas page strips iframes.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>Published base URL</h2>
+    <p id="base-url-line" style="font-family:Consolas,monospace;"></p>
+    <p class="tool-sub" style="margin:0.4rem 0 0;">
+      This page was generated against that base URL. If GitHub Pages is ever republished under a different owner,
+      repository name, or custom domain, regenerate these snippets — do not hand-edit the host in each one.
+    </p>
+  </div>
+
+  <section class="panel" id="tool-byte-explorer">
+    <h2>1. Byte Explorer <span class="tool-sub">(initial height 760px)</span></h2>
+    <pre class="embed-code" id="code-byte-explorer"></pre>
+    <button type="button" class="btn" data-copy="code-byte-explorer">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-byte-explorer" height="760" loading="lazy" title="Byte Explorer preview"></iframe>
+  </section>
+
+  <section class="panel" id="tool-binary-addition">
+    <h2>2. Binary Addition with Carries <span class="tool-sub">(initial height 860px)</span></h2>
+    <pre class="embed-code" id="code-binary-addition"></pre>
+    <button type="button" class="btn" data-copy="code-binary-addition">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-binary-addition" height="860" loading="lazy" title="Binary Addition with Carries preview"></iframe>
+  </section>
+
+  <section class="panel" id="tool-bitwise-workbench">
+    <h2>3. Bitwise Workbench <span class="tool-sub">(initial height 900px)</span></h2>
+    <pre class="embed-code" id="code-bitwise-workbench"></pre>
+    <button type="button" class="btn" data-copy="code-bitwise-workbench">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-bitwise-workbench" height="900" loading="lazy" title="Bitwise Workbench preview"></iframe>
+  </section>
+
+  <section class="panel" id="tool-binary-fractions">
+    <h2>4. Binary Fraction Builder <span class="tool-sub">(initial height 980px)</span></h2>
+    <pre class="embed-code" id="code-binary-fractions"></pre>
+    <button type="button" class="btn" data-copy="code-binary-fractions">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-binary-fractions" height="980" loading="lazy" title="Binary Fraction Builder preview"></iframe>
+  </section>
+
+  <section class="panel">
+    <h2>Token &rarr; URL mapping</h2>
+    <p class="tool-sub">For reference when updating the Canvas lecture page that uses these tokens:</p>
+    <pre class="embed-code" id="token-mapping"></pre>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite"></div>
+  <div class="tool-footer">CSIS 118B &middot; Unit 1 Canvas embed snippets.</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // Verified at generation time: this repository's GitHub Pages site,
+  // confirmed live and serving this same unit-01 folder.
+  var BASE = 'https://dinocrates.github.io/CSIS-118B-Tools/';
+
+  var TOOLS = [
+    { key: 'byte-explorer', path: 'unit-01/byte-explorer/', title: 'Byte Explorer', height: 760 },
+    { key: 'binary-addition', path: 'unit-01/binary-addition/', title: 'Binary Addition with Carries', height: 860 },
+    { key: 'bitwise-workbench', path: 'unit-01/bitwise-workbench/', title: 'Bitwise Workbench', height: 900 },
+    { key: 'binary-fractions', path: 'unit-01/binary-fractions/', title: 'Binary Fraction Builder', height: 980 }
+  ];
+
+  document.getElementById('base-url-line').textContent = BASE;
+
+  function esc(t) {
+    return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  TOOLS.forEach(function (tool) {
+    var fullUrl = BASE + tool.path;
+    var embedSrc = fullUrl + '?embed=1';
+    var snippet =
+      '<iframe src="' + embedSrc + '"\n' +
+      '        width="100%" height="' + tool.height + '"\n' +
+      '        loading="lazy"\n' +
+      '        style="border:none;"\n' +
+      '        title="' + tool.title + '"></iframe>\n' +
+      '<p><a href="' + fullUrl + '" target="_blank" rel="noopener">Open ' + tool.title + ' in a new tab</a></p>';
+
+    document.getElementById('code-' + tool.key).textContent = snippet;
+
+    var frame = document.getElementById('preview-' + tool.key);
+    frame.src = embedSrc;
+  });
+
+  var tokenLines = [
+    '{{BYTE_EXPLORER_URL}} = ' + BASE + 'unit-01/byte-explorer/',
+    '{{BINARY_ADDITION_URL}} = ' + BASE + 'unit-01/binary-addition/',
+    '{{BITWISE_WORKBENCH_URL}} = ' + BASE + 'unit-01/bitwise-workbench/',
+    '{{BINARY_FRACTIONS_URL}} = ' + BASE + 'unit-01/binary-fractions/',
+    '',
+    'Iframe src = that URL + "?embed=1". Fallback link = that URL with no query string.'
+  ];
+  document.getElementById('token-mapping').textContent = tokenLines.join('\n');
+
+  var statusLine = document.getElementById('status-line');
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = document.getElementById(btn.getAttribute('data-copy')).textContent;
+      function done() {
+        statusLine.textContent = 'Copied embed code for ' + btn.closest('section').querySelector('h2').textContent.trim() + '.';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); }
+    catch (e) { statusLine.textContent = 'Copy failed — select the code and copy manually.'; }
+    document.body.removeChild(ta);
+  }
+})();
+</script>
+</body>
+</html>

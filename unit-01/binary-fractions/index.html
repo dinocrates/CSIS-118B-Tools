@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Binary Fraction Builder — CSIS 118B Unit 1</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main>
+  <div class="tool-header">
+    <h1>Binary Fraction Builder</h1>
+    <p class="tool-sub">Convert an exact decimal fraction to binary by repeated doubling — one digit at a time, with exact rational arithmetic.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Enter a decimal from 0 up to (but not including) 1, with up to six decimal places.</li>
+      <li><strong>Next digit</strong> doubles the current remainder and records whether it crossed 1.</li>
+      <li>Some fractions terminate; others repeat forever. The tool detects both exactly, using integer arithmetic — never a rounded approximation.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="input-h">
+    <h2 id="input-h">Decimal fraction</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="frac-input">Value (0 &le; x &lt; 1, up to 6 decimal places)</label>
+        <input type="text" id="frac-input" autocomplete="off" value="0.625">
+      </div>
+      <button type="button" class="btn primary" id="convert-btn">Convert</button>
+      <button type="button" class="btn" id="reset-btn">Reset</button>
+    </div>
+    <p class="error-text" id="input-error" role="alert"></p>
+
+    <div class="preset-row" role="group" aria-label="Preset values">
+      <button type="button" class="btn" data-preset="0">0</button>
+      <button type="button" class="btn" data-preset="0.125">0.125</button>
+      <button type="button" class="btn" data-preset="0.625">0.625</button>
+      <button type="button" class="btn" data-preset="0.1">0.1</button>
+      <button type="button" class="btn" data-preset="0.2">0.2</button>
+      <button type="button" class="btn" data-preset="0.75">0.75</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="exact-h">
+    <h2 id="exact-h">Exact input as a fraction</h2>
+    <p class="tool-sub" id="exact-fraction" style="font-family:Consolas,monospace; font-size:1.05rem;"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="steps-h">
+    <h2 id="steps-h">Doubling steps</h2>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="next-digit-btn">Next digit</button>
+      <button type="button" class="btn" id="run-all-btn">Run up to 24 digits</button>
+    </div>
+    <div class="table-scroll step-scroll">
+      <table class="trace-table" id="steps-table">
+        <caption>Each step doubles the remainder; a doubled value &ge; the denominator emits a 1 (and subtracts the denominator), otherwise a 0.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Step</th>
+            <th scope="col">Place value</th>
+            <th scope="col">Remainder before</th>
+            <th scope="col">Doubled</th>
+            <th scope="col">Bit</th>
+            <th scope="col">Remainder after</th>
+          </tr>
+        </thead>
+        <tbody id="steps-tbody"></tbody>
+      </table>
+    </div>
+    <div class="status-line" id="status-line" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="bits-h">
+    <h2 id="bits-h">Binary expansion so far</h2>
+    <p class="tool-sub" id="bits-line" style="font-family:Consolas,monospace; font-size:1.2rem; word-break:break-all;"></p>
+    <p class="tool-sub" id="bits-status" style="margin:0.3rem 0 0;"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="trunc-h">
+    <h2 id="trunc-h">Truncation: value shown vs. exact value</h2>
+    <p class="tool-sub" id="trunc-line" style="margin:0;"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="rule-h">
+    <h2 id="rule-h">Why some fractions terminate and others repeat</h2>
+    <p class="tool-sub" id="rule-line" style="margin:0;">A reduced fraction terminates in base two if and only if its denominator is a power of two (a denominator of 1 — i.e. zero — also terminates). Fractions with any other prime factor in the denominator (such as 5, from tenths or fifths) repeat forever in binary, even though they are exact and finite in decimal.</p>
+  </section>
+
+  <div class="tool-footer">CSIS 118B &middot; Binary Fraction Builder &middot; part of the Unit 1 tool set.</div>
+</main>
+
+<script src="../shared/fraction-utils.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitwise Workbench — CSIS 118B Unit 1</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main>
+  <div class="tool-header">
+    <h1>Bitwise Workbench</h1>
+    <p class="tool-sub">Apply AND, OR, XOR, or NOT to two 8-bit values, one bit position at a time.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Click bits in A or B to edit them, or load decimal/hex values with the selector below.</li>
+      <li>Choose an operation. NOT uses only A — B is disabled and explained as unused.</li>
+      <li>Click (or tab to and press Enter/Space on) any result bit to see exactly how it was computed, matched against the truth table row.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="load-h">
+    <h2 id="load-h">Load values</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="base-select">Number base</label>
+        <select id="base-select">
+          <option value="hex" selected>Hex (1–2 digits)</option>
+          <option value="dec">Decimal (0–255)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="input-a">Value A</label>
+        <input type="text" id="input-a" autocomplete="off" value="AA">
+      </div>
+      <div class="field">
+        <label for="input-b">Value B (mask)</label>
+        <input type="text" id="input-b" autocomplete="off" value="33">
+      </div>
+      <button type="button" class="btn primary" id="load-btn">Load A &amp; B</button>
+      <button type="button" class="btn" id="reset-btn">Reset</button>
+    </div>
+    <p class="error-text" id="load-error" role="alert"></p>
+
+    <div class="preset-row" role="group" aria-label="Preset masks">
+      <button type="button" class="btn" data-op="AND" data-a="AA" data-b="33">AA AND 33</button>
+      <button type="button" class="btn" data-op="AND" data-a="B7" data-b="0F">B7 AND 0F (keep low nibble)</button>
+      <button type="button" class="btn" data-op="OR" data-a="00" data-b="08">00 OR 08 (set bit 3)</button>
+      <button type="button" class="btn" data-op="XOR" data-a="B7" data-b="01">B7 XOR 01 (toggle bit 0)</button>
+      <button type="button" class="btn" data-op="AND" data-a="FF" data-b="F7">FF AND F7 (clear bit 3)</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="op-h">
+    <h2 id="op-h">Operation</h2>
+    <div class="field">
+      <label for="op-select">Bitwise operation</label>
+      <select id="op-select">
+        <option value="AND">AND</option>
+        <option value="OR">OR</option>
+        <option value="XOR">XOR</option>
+        <option value="NOT">NOT (A only)</option>
+      </select>
+    </div>
+    <p class="tool-sub" id="op-explain" style="margin:0.5rem 0 0;"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="bits-h">
+    <h2 id="bits-h">Bit rows</h2>
+
+    <p class="tool-sub" style="margin:0 0 0.2rem;">A</p>
+    <div class="bit-grid" id="a-grid" role="group" aria-label="Value A, bit 7 through bit 0"></div>
+
+    <p class="tool-sub" id="b-label" style="margin:0.6rem 0 0.2rem;">B (mask)</p>
+    <div class="bit-grid" id="b-grid" role="group" aria-label="Value B, bit 7 through bit 0"></div>
+    <p class="error-text" id="b-disabled-note" style="color:var(--slate); font-weight:400;"></p>
+
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Result (click a bit for its explanation)</p>
+    <div class="bit-grid" id="result-grid" role="group" aria-label="Result, bit 7 through bit 0"></div>
+    <div class="explain-box" id="bit-explain" aria-live="polite">Click any result bit above to see how it was computed.</div>
+  </section>
+
+  <section class="panel" aria-labelledby="result-h">
+    <h2 id="result-h">Result</h2>
+    <div class="readout-grid">
+      <div class="readout">
+        <span class="readout-label">Result — hex</span>
+        <span class="readout-value" id="out-hex">0x22</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Result — unsigned decimal</span>
+        <span class="readout-value" id="out-unsigned">34</span>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Result — signed decimal</span>
+        <span class="readout-value" id="out-signed">34</span>
+      </div>
+    </div>
+    <div class="explain-box" id="result-explain"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="truth-h">
+    <h2 id="truth-h">Truth table for the selected operation</h2>
+    <div class="table-scroll">
+      <table class="trace-table" id="truth-table">
+        <thead><tr id="truth-head"></tr></thead>
+        <tbody id="truth-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="tool-footer">CSIS 118B &middot; Bitwise Workbench &middot; part of the Unit 1 tool set.</div>
+</main>
+
+<script src="../shared/bit-utils.js"></script>
+<script src="../shared/bitwise-utils.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,422 @@
+/*
+ * Shared styling for all CSIS 118B Unit 1 tools. Course palette:
+ * white, MSJC red (sparing accent only), charcoal text, slate
+ * secondary text, pale-gray surfaces, light borders.
+ */
+
+:root {
+  --white: #FFFFFF;
+  --red: #B2292E;
+  --red-dark: #8f2024;
+  --charcoal: #252525;
+  --slate: #5B6670;
+  --pale: #F5F6F6;
+  --border: #CFD2D3;
+  --border-light: #E3E5E6;
+  --font-ui: "Segoe UI", Arial, sans-serif;
+  --font-mono: Consolas, "Courier New", monospace;
+  --focus-ring: 3px solid var(--red);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--white);
+  color: var(--charcoal);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+body {
+  padding: 0 0 2rem;
+}
+
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ── course header (hidden in embed mode) ───────────────────────── */
+.course-header {
+  background: var(--pale);
+  border-bottom: 1px solid var(--border);
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  color: var(--slate);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: center;
+}
+.course-header a {
+  color: var(--red-dark);
+  text-decoration: underline;
+}
+.course-header a:hover { color: var(--red); }
+
+body.embed-mode .course-header { display: none; }
+
+/* ── tool header ─────────────────────────────────────────────────── */
+.tool-header {
+  padding: 1.25rem 0 0.5rem;
+}
+.tool-header h1 {
+  font-size: 1.4rem;
+  margin: 0 0 0.35rem;
+  color: var(--charcoal);
+}
+.tool-header .tool-sub {
+  color: var(--slate);
+  font-size: 0.95rem;
+  margin: 0;
+}
+body.embed-mode .tool-header {
+  padding-top: 0.75rem;
+}
+
+.instructions {
+  background: var(--pale);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+  margin: 0.75rem 0 1.25rem;
+  font-size: 0.92rem;
+}
+.instructions h2 {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--slate);
+  margin: 0 0 0.4rem;
+}
+.instructions ul { margin: 0.3rem 0 0; padding-left: 1.2rem; }
+.instructions li { margin-bottom: 0.2rem; }
+
+/* ── panels ──────────────────────────────────────────────────────── */
+.panel {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.1rem;
+  background: var(--white);
+}
+.panel h2 {
+  font-size: 1rem;
+  margin: 0 0 0.7rem;
+  color: var(--charcoal);
+}
+
+/* ── controls ────────────────────────────────────────────────────── */
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.9rem;
+  align-items: flex-end;
+  margin-bottom: 0.75rem;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+  flex: 1 1 160px;
+}
+.field label {
+  font-size: 0.82rem;
+  color: var(--slate);
+  font-weight: 600;
+}
+.field input[type="text"],
+.field input[type="number"],
+.field select {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--white);
+  color: var(--charcoal);
+  min-height: 2.2rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+.field input:focus,
+.field select:focus,
+button:focus-visible,
+.bit-btn:focus-visible,
+a:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.btn {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 0.95rem;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--charcoal);
+  cursor: pointer;
+  min-height: 44px;
+}
+.btn:hover { background: var(--pale); }
+.btn.primary {
+  background: var(--red);
+  border-color: var(--red-dark);
+  color: var(--white);
+}
+.btn.primary:hover { background: var(--red-dark); }
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+
+.preset-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.5rem 0 0.75rem;
+}
+.preset-row .btn {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.35rem 0.7rem;
+  min-height: 38px;
+}
+
+.error-text {
+  color: var(--red-dark);
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0.3rem 0 0;
+}
+.error-text:empty { display: none; }
+
+/* ── bit grid ────────────────────────────────────────────────────── */
+.bit-grid {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin: 0.6rem 0;
+}
+.nibble-group {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.3rem;
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+}
+.bit-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+.bit-weight {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--slate);
+}
+.bit-btn {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--charcoal);
+  cursor: pointer;
+}
+.bit-btn[aria-pressed="true"],
+.bit-btn.result-on {
+  background: var(--red);
+  border-color: var(--red-dark);
+  color: var(--white);
+}
+.bit-btn.result-explained {
+  box-shadow: inset 0 0 0 2px var(--charcoal);
+}
+table.trace-table tr.truth-highlight td {
+  background: #fdecec;
+  font-weight: 700;
+}
+.bit-btn:not(:disabled):hover { border-color: var(--slate); }
+.bit-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.bit-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--slate);
+}
+
+.bit-static {
+  font-family: var(--font-mono);
+  font-size: 1.1rem;
+  font-weight: 700;
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--pale);
+  color: var(--charcoal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bit-static.highlight {
+  border-color: var(--red);
+  box-shadow: inset 0 0 0 2px var(--red);
+}
+.bit-static.unknown {
+  color: var(--slate);
+  background: var(--white);
+  border-style: dashed;
+}
+
+/* ── results / readouts ─────────────────────────────────────────── */
+.readout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.6rem;
+  margin: 0.75rem 0;
+}
+.readout {
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.55rem 0.7rem;
+  background: var(--pale);
+}
+.readout .readout-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--slate);
+  display: block;
+  margin-bottom: 0.15rem;
+}
+.readout .readout-value {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  word-break: break-word;
+}
+.readout .readout-value.flag-true { color: var(--red-dark); }
+
+.explain-box {
+  background: var(--pale);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  font-size: 0.92rem;
+  margin: 0.6rem 0;
+}
+
+/* ── table / trace ──────────────────────────────────────────────── */
+.table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+}
+table.trace-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  min-width: 480px;
+}
+table.trace-table caption {
+  text-align: left;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  color: var(--slate);
+  padding: 0.4rem 0.6rem;
+}
+table.trace-table th,
+table.trace-table td {
+  border-bottom: 1px solid var(--border-light);
+  padding: 0.4rem 0.6rem;
+  text-align: center;
+}
+table.trace-table th {
+  background: var(--pale);
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+/* binary-addition: highlight one column (the current bit position) across every row */
+table.trace-table td.current-col {
+  background: #fdecec;
+  font-weight: 700;
+  box-shadow: inset 0 0 0 2px var(--red);
+}
+/* binary-fractions: highlight one whole row (the most recently revealed step) */
+table.trace-table tr.current-row td {
+  background: #fdecec;
+  font-weight: 700;
+}
+table.trace-table tr.current-row td:first-child {
+  border-left: 3px solid var(--red);
+}
+
+.step-scroll {
+  max-height: 360px;
+  overflow-y: auto;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+}
+
+/* ── live region (visible, not decorative) ──────────────────────── */
+.status-line {
+  font-size: 0.88rem;
+  color: var(--charcoal);
+  background: var(--pale);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  margin: 0.6rem 0;
+  min-height: 1.4em;
+}
+
+/* ── footer ──────────────────────────────────────────────────────── */
+.tool-footer {
+  font-size: 0.8rem;
+  color: var(--slate);
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-light);
+}
+
+/* ── responsive ──────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .bit-btn, .bit-static { width: 38px; height: 38px; font-size: 1rem; }
+  main { padding: 0 0.6rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

@@ -279,8 +279,64 @@
 
 <script>
 // ─── tool catalog ────────────────────────────────────────────────────────────
-// To add a new tool: drop its HTML file in visualizers/ and add an entry here.
+// To add a new tool: drop its HTML file in visualizers/ (or a unit-NN/ folder)
+// and add an entry here.
 var TOOLS = [
+  {
+    unit: 'UNIT 1 — BYTES & TWO’S COMPLEMENT',
+    title: 'Byte Explorer',
+    file: 'unit-01/byte-explorer/index.html',
+    embedHeight: 760,
+    desc: 'Build an 8-bit pattern by clicking bits or loading a decimal/binary/hex value, and read the same ' +
+          'pattern four ways at once: binary, hex, unsigned decimal, and signed two’s-complement decimal. ' +
+          'Includes a step-by-step two’s-complement negate (invert, then add one).',
+    demos: [
+      { sig: '38 → 00100110', what: 'unsigned load, signed value matches unsigned' },
+      { sig: '183 → 10110111', what: 'MSB set — signed value is 183 − 256 = −73' },
+      { sig: '128 → negate', what: 'the one case where negate can’t fit: stays 10000000' },
+    ],
+  },
+  {
+    unit: 'UNIT 1 — ADDITION & CARRIES',
+    title: 'Binary Addition with Carries',
+    file: 'unit-01/binary-addition/index.html',
+    embedHeight: 860,
+    desc: 'Add two fixed-width (4- or 8-bit) binary numbers one column at a time. Predict each result bit before ' +
+          'revealing it, then see carry-out and signed overflow explained as two independent, sometimes-disagreeing ' +
+          'flags.',
+    demos: [
+      { sig: '11 + 12 (8-bit)', what: 'no carry out, no signed overflow' },
+      { sig: '11 + 12 (4-bit)', what: 'same operands, now both carry out and signed overflow are true' },
+      { sig: '127 + 1 (8-bit)', what: 'no carry out, but signed overflow is true' },
+    ],
+  },
+  {
+    unit: 'UNIT 1 — BITWISE LOGIC',
+    title: 'Bitwise Workbench',
+    file: 'unit-01/bitwise-workbench/index.html',
+    embedHeight: 900,
+    desc: 'Apply AND, OR, XOR, or NOT to two 8-bit values. Click any result bit for a plain-language explanation ' +
+          'matched to the live truth table, and see common masking idioms: clearing, setting, and toggling a single bit.',
+    demos: [
+      { sig: '0xAA AND 0x33', what: 'classic AND example → 0x22' },
+      { sig: '0xB7 AND 0x0F', what: 'mask off the high nibble' },
+      { sig: '0x00 OR 0x08', what: 'set bit 3 without touching the rest' },
+    ],
+  },
+  {
+    unit: 'UNIT 1 — BINARY FRACTIONS',
+    title: 'Binary Fraction Builder',
+    file: 'unit-01/binary-fractions/index.html',
+    embedHeight: 980,
+    desc: 'Convert an exact decimal fraction to binary by repeated doubling, one digit at a time, using exact ' +
+          'integer (BigInt) arithmetic throughout. Exactly detects termination versus a repeating pattern — ' +
+          'never a rounded floating-point guess.',
+    demos: [
+      { sig: '0.625 → 0.101₂', what: 'terminates exactly in 3 digits' },
+      { sig: '0.1 → 0.0[0011]…₂', what: 'one non-repeating digit, then a repeating group' },
+      { sig: '0.2 → 0.[0011]…₂', what: 'repeats immediately — no non-repeating prefix' },
+    ],
+  },
 ];
 
 // ─── embed URL: resolve against where this page is actually hosted ──────────
@@ -289,15 +345,15 @@ var TOOLS = [
 // embed code always works.
 var SITE_BASE = 'https://dinocrates.github.io/CSIS-118B-Tools/';
 function embedUrl(file) {
-  if (location.protocol === 'http:' || location.protocol === 'https:') {
-    return new URL(file, location.href).href;
-  }
-  return SITE_BASE + file;
+  var base = (location.protocol === 'http:' || location.protocol === 'https:')
+    ? new URL(file, location.href).href
+    : SITE_BASE + file;
+  return base + '?embed=1';
 }
 function embedSnippet(tool) {
   return '<iframe src="' + embedUrl(tool.file) + '"\n' +
          '        width="100%" height="' + tool.embedHeight + '"\n' +
-         '        style="border:none;" title="' + tool.title + '"></iframe>';
+         '        loading="lazy" style="border:none;" title="' + tool.title + '"></iframe>';
 }
 
 function esc(t) {
