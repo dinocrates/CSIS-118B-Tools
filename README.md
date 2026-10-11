@@ -26,9 +26,30 @@ The [Unit 1 index page](unit-01/index.html) links all four. [unit-01/canvas-embe
 
 Every tool's arithmetic lives in a dependency-free module under `unit-01/shared/*.js`, written so the exact same file works as a browser `<script>` (attaches to `window.CSIS118B.*`) and as a Node `require()` target (for the test suite). The DOM/event-wiring code in each tool's `app.js` only calls into that module — it does no arithmetic of its own. This is what made it possible to exhaustively test the addition logic (see below) independent of any UI.
 
+## Unit 2 — CPU, Instructions, and Flags
+
+A single tabbed lab page lives at [unit-02/index.html](unit-02/index.html), covering three linked explorations:
+
+| Demo | What it teaches |
+|------|------------------|
+| Instruction-cycle explorer | Steps a fixed NASM snippet (`mov`/`mov`/`add`/`sub`) through fetch/decode/execute; EAX/EBX/flags only change on execute |
+| Register-alias explorer | MOV through RAX/EAX/AX/AH/AL from a starting `0x1122334455667788`, showing which bytes are written, zero-extended, or preserved |
+| Arithmetic-flags explorer | ADD/SUB at 8/16/32/64 bits with full CF/ZF/SF/OF/AF/PF, unsigned and signed interpretations |
+
+Unlike Unit 1 (one folder per tool), Unit 2 is one page with three `role="tab"` panels, matching the originally supplied prototype design. It follows the same conventions otherwise:
+- Math lives in dependency-free modules under [unit-02/shared/](unit-02/shared/) (`instruction-model.js`, `register-alias.js`, `arithmetic-flags.js`), loaded by `<script src>` and exercised by [tests/unit-02/](tests/unit-02/). `unit-02/app.js` only wires the DOM to those modules — it does no arithmetic of its own.
+- `?embed=1` hides the course header for Canvas iframes, via `unit-02/shared/ui-shell.js` (same pattern as `unit-01/shared/ui-shell.js`).
+- Deep links to a specific demo use a `#demo1` / `#demo2` / `#demo3` hash, combinable with `?embed=1` (e.g. `unit-02/index.html?embed=1#demo2`). [unit-02/canvas-embeds.html](unit-02/canvas-embeds.html) has the copy-paste snippets.
+- All arithmetic uses BigInt; no fixed-width masking relies on JS `Number`.
+
+Run its tests with `node tests\unit-02\run-all.js` (68 checks, including the ADD/SUB acceptance table at every required width and the register-alias independent/cumulative examples).
+
+**Known limitation:** this page was built and integrated against the `unit02-interactive-lab.html` prototype only. The companion `unit02-lecture-preview.html`, `unit02-canvas.html`, and the four lecture-diagram assets described in the integration brief were not available in this repository or session, so the Canvas rich-content fragment, its image-field URLs, and the lesson/module/video link resolution described in that brief are **not done** — only the standalone lab page, its tests, and its Canvas iframe embed snippets (with placeholder token names, unverified against the actual lecture page) are included. The token-mapping section of `unit-02/canvas-embeds.html` says this explicitly.
+
 ## Adding a new tool
 
 - **Unit 1 style (recommended for Unit 1 additions):** add a `unit-01/<tool-name>/` folder with its own `index.html` + `app.js`, reuse `unit-01/shared/styles.css` and `ui-shell.js`, add a link on `unit-01/index.html`, add a snippet to `unit-01/canvas-embeds.html`, and add a tile entry to the root `index.html`'s `TOOLS` array.
+- **Unit 2 style (recommended for Unit 2 additions):** add a new tab/section to `unit-02/index.html`, its math to a new `unit-02/shared/*.js` module (loaded by `<script src>`, tested under `tests/unit-02/`), and its DOM wiring to `unit-02/app.js`. Add a snippet to `unit-02/canvas-embeds.html`.
 - **Other / one-off tools:** drop a self-contained HTML file into `visualizers/` and add an entry to the `TOOLS` array near the top of the `<script>` in the root `index.html` (unit, title, file path, embed height, description, demo list). The tile, embed code, and tool count are generated from that entry automatically.
 
 ## Running the tests
@@ -38,17 +59,18 @@ The math modules have a plain Node test suite (no dependencies, no build step):
 ```powershell
 # from the repository root
 node tests\unit-01\run-all.js
+node tests\unit-02\run-all.js
 ```
 
-This runs 48 checks across the four shared modules, including an **exhaustive sweep of every 4-bit and 8-bit addition operand pair** (65,792 pairs total) checking the stored result, carry-out, signed overflow, and column-trace consistency against the closed-form formulas — not just the specific acceptance-case numbers.
+Unit 1 runs 48 checks across its four shared modules, including an **exhaustive sweep of every 4-bit and 8-bit addition operand pair** (65,792 pairs total) checking the stored result, carry-out, signed overflow, and column-trace consistency against the closed-form formulas — not just the specific acceptance-case numbers. Unit 2 runs 68 checks across its three shared modules: the full instruction trace, the register-alias acceptance/boundary table (including the EAX zero-extension cases), and the ADD/SUB flag acceptance table at 8/16/32/64-bit boundaries.
 
-There is no committed browser/DOM test harness (adding one would mean shipping a dev dependency the production site doesn't need). During development, the UI was additionally exercised with a temporary jsdom + Playwright harness (not part of this repo) that:
-- Loaded each tool's real DOM and clicked through presets, bit toggles, width/operand changes, invalid input, and the predict/reveal flow, asserting on the rendered output (94 checks, 0 failures, 0 console errors).
-- Loaded each tool in an actual Chromium browser at 320px, 375px, 768px, and 1100px widths, and at a 200%-zoom-equivalent viewport, asserting no horizontal page overflow (49 checks, 0 failures).
-- Embedded Byte Explorer in a page served from a different local origin (`127.0.0.1` inside a `localhost` host page) with `?embed=1`, confirming the tool renders, is interactive, and shows no course header inside the frame — the actual mechanism Canvas uses, not just a same-origin approximation.
-- Confirmed zero console errors and zero failed asset requests, in both normal and `?embed=1` modes, for all four tools.
+There is no committed browser/DOM test harness (adding one would mean shipping a dev dependency the production site doesn't need). During development, the UI was additionally exercised with a temporary Playwright harness (not part of this repo) that:
+- Loaded each tool's real DOM and clicked through presets, bit toggles, width/operand changes, invalid input, and the predict/reveal flow, asserting on the rendered output (Unit 1: 94 checks; Unit 2: 59 checks, including the full fetch/decode/execute trace, all four register-alias acceptance examples, the ADD/SUB flag table, stale-input warnings, and keyboard tab navigation — 0 failures, 0 console errors in both).
+- Loaded each tool in an actual Chromium browser at 320px, 375px, 768px, and 1100px widths, asserting no horizontal page overflow.
+- Loaded Unit 2 with `?embed=1`, confirming the course header is hidden and `#demo1`/`#demo2`/`#demo3` deep links open the right tab — the actual mechanism Canvas uses. Unit 1 additionally verified this across a different local origin (`127.0.0.1` inside a `localhost` host page).
+- Confirmed zero console errors and zero failed asset requests, in both normal and `?embed=1` modes, for all tools.
 
-**Not verified** (needs a human pass): an actual Canvas Student View embed, and manual keyboard-only navigation/screen-reader narration end to end. The markup uses semantic buttons/labels, `aria-pressed` on real toggles, `aria-live` status regions, and visible focus outlines throughout, but automated DOM tests can drive elements programmatically without proving a screen reader announces them well — please spot-check with a keyboard and/or screen reader before relying on this for an accommodation.
+**Not verified** (needs a human pass): an actual Canvas Student View embed, 200%-zoom reflow, and manual keyboard-only navigation/screen-reader narration end to end. The markup uses semantic buttons/labels, `aria-pressed`/`aria-selected` on real toggles, `aria-live` status regions, and visible focus outlines throughout, but automated DOM tests can drive elements programmatically without proving a screen reader announces them well — please spot-check with a keyboard and/or screen reader before relying on this for an accommodation.
 
 ## Previewing locally (Windows / PowerShell)
 

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Embeds — Unit 2 — CSIS 118B</title>
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .embed-code {
+    background: var(--ink);
+    color: #eef2fc;
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 0.8rem 0.9rem;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+  }
+  .preview-frame {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    margin-top: 0.5rem;
+  }
+  .status-line { min-height: 1.5em; margin-top: 1rem; }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">CSIS-118B / UNIT 02 / INSTRUCTOR</p>
+  <h1>Canvas embeds — Unit 2</h1>
+  <p>Copy an iframe snippet into the Canvas Rich Content Editor's HTML view, or use the fallback link if a Canvas page strips iframes. <a href="index.html">&larr; Back to the Unit 2 lab</a></p>
+
+  <section>
+    <h2>Published base URL</h2>
+    <p id="base-url-line" class="mono"></p>
+    <p>This page was generated against that base URL. If GitHub Pages is ever republished under a different owner, repository name, or custom domain, regenerate these snippets rather than hand-editing the host in each one.</p>
+  </section>
+
+  <section>
+    <h2>1. Full lab <span class="mono">(opens on Demo 1; initial height 1000px)</span></h2>
+    <pre class="embed-code" id="code-full"></pre>
+    <button type="button" class="primary" data-copy="code-full">Copy embed code</button>
+    <p>Preview:</p>
+    <iframe class="preview-frame" id="preview-full" height="1000" loading="lazy" title="Unit 2 interactive lab preview"></iframe>
+  </section>
+
+  <section>
+    <h2>2. Instruction-cycle explorer deep link <span class="mono">(opens on Demo 1)</span></h2>
+    <pre class="embed-code" id="code-demo1"></pre>
+    <button type="button" class="primary" data-copy="code-demo1">Copy embed code</button>
+    <p>Preview:</p>
+    <iframe class="preview-frame" id="preview-demo1" height="1000" loading="lazy" title="Instruction-cycle explorer preview"></iframe>
+  </section>
+
+  <section>
+    <h2>3. Register-alias explorer deep link <span class="mono">(opens on Demo 2)</span></h2>
+    <pre class="embed-code" id="code-demo2"></pre>
+    <button type="button" class="primary" data-copy="code-demo2">Copy embed code</button>
+    <p>Preview:</p>
+    <iframe class="preview-frame" id="preview-demo2" height="1000" loading="lazy" title="Register-alias explorer preview"></iframe>
+  </section>
+
+  <section>
+    <h2>4. Arithmetic-flags explorer deep link <span class="mono">(opens on Demo 3)</span></h2>
+    <pre class="embed-code" id="code-demo3"></pre>
+    <button type="button" class="primary" data-copy="code-demo3">Copy embed code</button>
+    <p>Preview:</p>
+    <iframe class="preview-frame" id="preview-demo3" height="1000" loading="lazy" title="Arithmetic-flags explorer preview"></iframe>
+  </section>
+
+  <section class="callout">
+    <h2>Token &rarr; URL mapping</h2>
+    <p>For reference when wiring up a Unit 2 lecture page with placeholder tokens. <strong>These exact token names have not been confirmed against a real lecture-page or Canvas-authoring source file</strong> — none was available to generate this page against. Rename them to match whatever tokens the actual lecture page uses before relying on this mapping.</p>
+    <pre class="embed-code" id="token-mapping"></pre>
+  </section>
+
+  <div class="status" id="status-line" role="status" aria-live="polite"></div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // Verified at generation time: this repository's GitHub Pages site,
+  // confirmed live and serving unit-01/ under this same base.
+  var BASE = 'https://dinocrates.github.io/CSIS-118B-Tools/';
+
+  var PAGES = [
+    { key: 'full', path: 'unit-02/index.html', hash: '', title: 'Unit 2 interactive lab' },
+    { key: 'demo1', path: 'unit-02/index.html', hash: '#demo1', title: 'Instruction-cycle explorer' },
+    { key: 'demo2', path: 'unit-02/index.html', hash: '#demo2', title: 'Register-alias explorer' },
+    { key: 'demo3', path: 'unit-02/index.html', hash: '#demo3', title: 'Arithmetic-flags explorer' }
+  ];
+
+  document.getElementById('base-url-line').textContent = BASE;
+
+  function esc(t) {
+    return t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  PAGES.forEach(function (p) {
+    var fullUrl = BASE + p.path + p.hash;
+    var embedSrc = BASE + p.path + '?embed=1' + p.hash;
+    var snippet =
+      '<iframe src="' + embedSrc + '"\n' +
+      '        width="100%" height="1000"\n' +
+      '        loading="lazy"\n' +
+      '        style="border:none;"\n' +
+      '        title="' + p.title + '"></iframe>\n' +
+      '<p><a href="' + fullUrl + '" target="_blank" rel="noopener">Open ' + p.title + ' in a new tab</a></p>';
+
+    document.getElementById('code-' + p.key).textContent = snippet;
+
+    var frame = document.getElementById('preview-' + p.key);
+    frame.src = embedSrc;
+  });
+
+  var tokenLines = [
+    '{{UNIT02_LAB_URL}}   = ' + BASE + 'unit-02/index.html',
+    '{{UNIT02_DEMO1_URL}} = ' + BASE + 'unit-02/index.html#demo1',
+    '{{UNIT02_DEMO2_URL}} = ' + BASE + 'unit-02/index.html#demo2',
+    '{{UNIT02_DEMO3_URL}} = ' + BASE + 'unit-02/index.html#demo3',
+    '',
+    'Iframe src = that URL with ?embed=1 inserted before the #hash. Fallback link = that URL as-is.'
+  ];
+  document.getElementById('token-mapping').textContent = tokenLines.join('\n');
+
+  var statusLine = document.getElementById('status-line');
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = document.getElementById(btn.getAttribute('data-copy')).textContent;
+      function done() {
+        statusLine.textContent = 'Copied embed code for ' + btn.closest('section').querySelector('h2').textContent.trim() + '.';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); }
+    catch (e) { statusLine.textContent = 'Copy failed — select the code and copy manually.'; }
+    document.body.removeChild(ta);
+  }
+})();
+</script>
+</body>
+</html>

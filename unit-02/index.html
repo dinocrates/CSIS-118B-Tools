@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unit 02 — CPU Interactive Lab</title>
+  <link rel="stylesheet" href="shared/styles.css">
+</head>
+<body>
+  <main>
+    <p class="eyebrow">CSIS-118B / UNIT 02 / EXPLORE</p>
+    <h1>Watch the machine state change</h1>
+    <p>Predict a result, apply one change, and explain the evidence. These are deterministic teaching models, not a complete x86 emulator or CPU timing simulator.</p>
+
+    <nav role="tablist" aria-label="Interactive explorations">
+      <button id="tab1" role="tab" aria-controls="demo1" aria-selected="true">1 · Instruction cycle</button>
+      <button id="tab2" role="tab" aria-controls="demo2" aria-selected="false" tabindex="-1">2 · Register aliases</button>
+      <button id="tab3" role="tab" aria-controls="demo3" aria-selected="false" tabindex="-1">3 · Arithmetic flags</button>
+    </nav>
+
+    <section id="demo1" role="tabpanel" aria-labelledby="tab1">
+      <h2>Instruction-cycle explorer</h2>
+      <p>At which stage will EAX change? Step through this fixed instruction snippet. Registers and the four displayed flags start at zero for this model only.</p>
+
+      <div class="grid">
+        <div>
+          <div class="scroll">
+            <table>
+              <caption>NASM instruction snippet</caption>
+              <thead>
+                <tr><th>Step</th><th>Instruction</th></tr>
+              </thead>
+              <tbody id="program"></tbody>
+            </table>
+          </div>
+          <p>Instruction numbers are sequence labels, not byte addresses. This model does not display RIP or machine-code encodings.</p>
+        </div>
+
+        <div class="panel">
+          <div class="stages" id="stages">
+            <span>Fetch</span>
+            <span>Decode</span>
+            <span>Execute</span>
+          </div>
+          <pre id="registers"></pre>
+          <p id="cycle-status" role="status" aria-live="polite" class="status"></p>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="step">Step one stage</button>
+        <button id="reset-cycle">Reset cycle</button>
+      </div>
+
+      <details>
+        <summary>Explain the result</summary>
+        <p>MOV copies a value and preserves arithmetic flags. ADD changes EAX to 8 while EBX stays 3. SUB changes EAX to 0 and sets ZF. Fetch/decode/execute are conceptual stages, not individual clock cycles. Real CPUs overlap these activities.</p>
+      </details>
+    </section>
+
+    <section id="demo2" role="tabpanel" aria-labelledby="tab2" hidden>
+      <h2>Register-alias explorer</h2>
+      <p>RAX, EAX, AX, AH, and AL name overlapping bits. Reset before each independent experiment, or apply several writes to see cumulative changes.</p>
+
+      <div class="grid">
+        <div>
+          <label for="seed">Starting RAX (unsigned decimal or 0x hex)</label>
+          <input id="seed" value="0x1122334455667788" spellcheck="false">
+          <button id="reset-reg">Load starting RAX</button>
+
+          <label for="alias">Destination alias</label>
+          <select id="alias">
+            <option>AL</option>
+            <option>AH</option>
+            <option>AX</option>
+            <option>EAX</option>
+            <option>RAX</option>
+          </select>
+
+          <label for="write-value">Value to write (unsigned decimal or 0x hex)</label>
+          <input id="write-value" value="0xAA" spellcheck="false">
+
+          <div class="actions">
+            <button class="primary" id="write-reg">Apply MOV</button>
+            <button id="restore-reg">Restore original example</button>
+          </div>
+
+          <p id="reg-error" class="error" role="alert"></p>
+        </div>
+
+        <div class="panel">
+          <div class="value mono" id="rax"></div>
+          <div id="bytes" class="bytes" aria-label="RAX bytes, most significant first"></div>
+          <div class="scroll">
+            <table>
+              <caption>Current overlapping values</caption>
+              <thead>
+                <tr><th>Alias</th><th>Hex value</th></tr>
+              </thead>
+              <tbody id="aliases"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <p id="reg-status" class="callout" role="status" aria-live="polite"></p>
+      <p>The byte display is a register value written most-significant byte first; it is not a memory layout. A 32-bit write clears the upper 32 bits (zero-extension). An 8-bit or 16-bit write preserves bits outside the selected alias. MOV does not change arithmetic flags.</p>
+      <p>AH, BH, CH, and DH name the high byte of AX/BX/CX/DX. They cannot be encoded in any instruction that also requires a REX prefix (for example, one using R8–R15 or a 64-bit operand size) — on real x86-64 hardware that combination is illegal, so this model never asks you to mix AH-style high-byte registers with a REX-requiring operand.</p>
+
+      <details>
+        <summary>Try these independent predictions</summary>
+        <p>Starting each time at 0x1122334455667788: AL ← 0xAA gives 0x11223344556677AA; AH ← 0xAA gives 0x112233445566AA88; AX ← 0xBEEF gives 0x112233445566BEEF; EAX ← 0x12345678 gives 0x0000000012345678.</p>
+      </details>
+    </section>
+
+    <section id="demo3" role="tabpanel" aria-labelledby="tab3" hidden>
+      <h2>Arithmetic-flags explorer</h2>
+      <p>Choose a width and enter two <strong>unsigned bit patterns</strong> in decimal or 0x hex. The model also shows their two’s-complement signed interpretations.</p>
+
+      <div class="grid">
+        <div>
+          <label for="width">Operand width</label>
+          <select id="width">
+            <option value="8">8 bits</option>
+            <option value="16">16 bits</option>
+            <option value="32">32 bits</option>
+            <option value="64">64 bits</option>
+          </select>
+
+          <label for="op">Operation</label>
+          <select id="op">
+            <option>ADD</option>
+            <option>SUB</option>
+          </select>
+
+          <label for="a">Destination value (A)</label>
+          <input id="a" value="255" spellcheck="false">
+
+          <label for="b">Source value (B)</label>
+          <input id="b" value="1" spellcheck="false">
+
+          <div class="actions">
+            <button class="primary" id="calculate">Execute arithmetic</button>
+          </div>
+
+          <p id="flag-error" class="error" role="alert"></p>
+        </div>
+
+        <div class="panel">
+          <p id="flag-instruction" class="mono"></p>
+          <div id="flag-result" class="value"></div>
+          <pre id="interpretation"></pre>
+          <div id="flags" class="flags"></div>
+        </div>
+      </div>
+
+      <div class="actions" aria-label="Load and execute a preset">
+        <button data-preset="255,1,ADD">8-bit: 255 + 1</button>
+        <button data-preset="127,1,ADD">8-bit: 127 + 1</button>
+        <button data-preset="0,1,SUB">8-bit: 0 − 1</button>
+        <button data-preset="128,1,SUB">8-bit: 128 − 1</button>
+      </div>
+
+      <p id="flag-status" class="callout" role="status" aria-live="polite"></p>
+      <p>CF reports an unsigned carry (ADD) or borrow (SUB). OF reports that the mathematical signed result does not fit. ZF tests for a zero result; SF is the result’s top bit. AF reports a low-nibble carry/borrow. PF checks even parity in the low byte only.</p>
+    </section>
+
+    <footer>
+      <p>CSIS 118B &middot; Unit 2 interactive lab &middot; <a href="https://dinocrates.github.io/x86-64-CSIS-118/index.html">x86 playground</a> &middot; <a href="canvas-embeds.html">Canvas embeds (for instructors)</a></p>
+    </footer>
+  </main>
+
+  <script src="shared/instruction-model.js"></script>
+  <script src="shared/register-alias.js"></script>
+  <script src="shared/arithmetic-flags.js"></script>
+  <script src="shared/ui-shell.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
