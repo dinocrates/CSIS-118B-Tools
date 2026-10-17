@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storage-Layout Explorer &mdash; CSIS 118B Unit 3</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u03-tool">
+  <div class="tool-header">
+    <h1>Storage-layout explorer</h1>
+    <p class="tool-sub">Choose an element width and initializer list. Predict the total bytes and a byte offset before revealing the layout.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Pick a width (<code>db</code>/<code>dw</code>/<code>dd</code>/<code>dq</code>) and 1&ndash;8 integer initializers.</li>
+      <li>Choose a zero-based element index, then <strong>Reveal layout</strong>.</li>
+      <li>Offsets are relative to the data label &mdash; this model emits contiguous values with no padding or alignment, and does not fabricate process addresses.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Define the data</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="width-select">Definition width</label>
+        <select id="width-select">
+          <option value="1">db &middot; BYTE &middot; 1 byte</option>
+          <option value="2">dw &middot; WORD &middot; 2 bytes</option>
+          <option value="4" selected>dd &middot; DWORD &middot; 4 bytes</option>
+          <option value="8">dq &middot; QWORD &middot; 8 bytes</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="values-input">Initializers (1&ndash;8 integers, comma-separated)</label>
+        <input type="text" id="values-input" value="10, 20, 30, 40">
+      </div>
+      <div class="field">
+        <label for="index-input">Element index (zero-based)</label>
+        <input type="text" id="index-input" value="3" inputmode="numeric">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="reveal-btn">Reveal layout</button>
+      <button type="button" class="btn" id="reset-btn">Reset</button>
+      <button type="button" class="btn" id="preset-btn">Use 0x12345678 preset</button>
+    </div>
+    <p class="tool-sub" id="range-note" style="margin:0 0 0.4rem;"></p>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="code-h">
+    <h2 id="code-h">NASM declaration</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false"></code></pre>
+  </section>
+
+  <section class="panel" aria-labelledby="summary-h">
+    <h2 id="summary-h">Summary</h2>
+    <div class="explain-box" id="summary-box" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="bytes-h">
+    <h2 id="bytes-h">Emitted bytes, increasing address order</h2>
+    <p class="tool-sub" style="margin:0 0 0.5rem;">Little endian within each multi-byte value: the least significant byte of each element comes first.</p>
+    <div class="table-scroll step-scroll">
+      <table class="trace-table" id="byte-table">
+        <caption>Byte offset = index &times; bytes per element</caption>
+        <thead>
+          <tr><th scope="col">Element index</th><th scope="col">Byte offset</th><th scope="col">Hex byte</th><th scope="col">Boundary</th></tr>
+        </thead>
+        <tbody id="byte-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="instructions">
+    <h2>Why this matters</h2>
+    <ul>
+      <li>NASM does not retain a label's data definition as a type check for later accesses &mdash; a too-wide memory access can read neighboring bytes.</li>
+      <li>In the default <code>dd 10, 20, 30, 40</code> array, offset <code>0x0B</code> (11 decimal) does not start the fourth DWORD; only offset 12 (<code>0x0C</code>) does.</li>
+    </ul>
+  </div>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true">Ready. Predict the total bytes before revealing.</div>
+
+  <div class="tool-footer">CSIS 118B &middot; Storage-layout explorer &middot; part of the Unit 3 tool set.</div>
+</main>
+
+<script src="../shared/integer-input.js"></script>
+<script src="../shared/storage-layout.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 Tools — CSIS 118B</title>
+<link rel="stylesheet" href="shared/styles.css">
+</head>
+<body>
+<main class="u03-tool">
+  <div class="course-header">
+    <span>CSIS 118B &middot; Computer Organization &amp; Assembly</span>
+    <a href="../index.html">&larr; All CSIS 118B tools</a>
+  </div>
+
+  <div class="tool-header">
+    <h1>Unit 3 &mdash; Memory, Data Representation, and the Assembler</h1>
+    <p class="tool-sub">Five standalone browser tools. Each one works on its own page and can also be embedded in a Canvas page with <code>?embed=1</code>.</p>
+  </div>
+
+  <section class="panel">
+    <h2>Load&ndash;compute&ndash;store tracer</h2>
+    <p class="tool-sub">Step a fixed LEA / load / ADD / store sequence and predict which of EAX, RBX, <code>count</code>, and <code>result</code> changes after each instruction. Lecture placement: Page 1, videos U03-05/06.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="memory-trace/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Storage-layout explorer</h2>
+    <p class="tool-sub">Choose a DB/DW/DD/DQ width and 1&ndash;8 initializers, then predict the total bytes and an element's byte offset before revealing the little-endian layout. Lecture placement: Page 2, U03-07/09/10.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="storage-layout/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Byte interpretation and extension</h2>
+    <p class="tool-sub">Compare unsigned and signed readings of one stored byte, and three ways (MOVZX/MOVSX into RDI or EDI) of widening it into a 64-bit register. Lecture placement: Page 2, U03-08.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="byte-interpretation/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>String bytes and length explorer</h2>
+    <p class="tool-sub">Count visible ASCII characters versus storage bytes versus <code>$ - label</code>, with safe NASM source generation for strings containing quotes. Lecture placement: Page 2 U03-11, and again at Page 3 U03-15.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="string-length/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Assembler phase workbench</h2>
+    <p class="tool-sub">Compare five fixed NASM examples (EQU, %define, grouped %define, %assign, and runtime ADD) at preprocessing, assembly, and runtime. Lecture placement: Page 3, U03-14/16/17.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="assembler-workbench/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Register-width review (reused from Unit 2)</h2>
+    <p class="tool-sub">The lecture's brief width review reuses the existing Unit 2 register-alias explorer rather than a new sixth tool. It shows MOV writes through RAX/EAX/AX/AH/AL from a starting <code>0x1122334455667788</code>, and which bytes are written, zero-extended, or preserved.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="../unit-02/index.html?embed=1#demo2">Open register-alias explorer</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>For instructors</h2>
+    <p class="tool-sub">Copyable Canvas iframe embed codes, separate-tab fallback links, and the verified lecture-placement table are on the <a href="canvas-embeds.html">Canvas embeds page</a>.</p>
+  </section>
+
+  <div class="tool-footer">CSIS 118B &middot; Unit 3 tool set. These are deliberately limited teaching models &mdash; they do not assemble arbitrary source, emulate a whole CPU, implement a debugger, or connect to the x86 Playground.</div>
+</main>
+</body>
+</html>

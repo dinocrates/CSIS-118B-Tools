@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>String Bytes and Length Explorer &mdash; CSIS 118B Unit 3</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u03-tool">
+  <div class="tool-header">
+    <h1>String bytes and length explorer</h1>
+    <p class="tool-sub">Count visible ASCII characters, storage bytes, and the assembly-time span measured by <code>$ - label</code>.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Enter 0&ndash;40 printable ASCII characters (codes 32&ndash;126); this model does not handle Unicode/UTF-8.</li>
+      <li>Toggle whether a line feed (10) and/or a NUL terminator (0) are appended, then <strong>Reveal</strong>.</li>
+      <li>Visible characters, storage bytes, and <code>MESSAGE_BYTES</code> are three different counts &mdash; do not assume they are always 2 apart.</li>
+      <li>The text character <code>"5"</code> is stored as ASCII code 53 (<code>0x35</code>), not the number 5 &mdash; typed text and a numeric byte value are different things.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Define the string</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="text-input">ASCII text (0&ndash;40 characters)</label>
+        <input type="text" id="text-input" value="Hi" maxlength="40">
+      </div>
+      <div class="checkbox-field">
+        <input type="checkbox" id="lf-check" checked>
+        <label for="lf-check">Include a line feed (10)</label>
+      </div>
+      <div class="checkbox-field">
+        <input type="checkbox" id="nul-check" checked>
+        <label for="nul-check">Include NUL (0)</label>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="reveal-btn">Reveal bytes</button>
+      <button type="button" class="btn" id="reset-btn">Reset to Hi + LF + NUL</button>
+    </div>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="code-h">
+    <h2 id="code-h">Generated NASM source</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false"></code></pre>
+  </section>
+
+  <section class="panel" aria-labelledby="summary-h">
+    <h2 id="summary-h">Summary</h2>
+    <div class="explain-box" id="summary-box" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="bytes-h">
+    <h2 id="bytes-h">Emitted bytes, address order</h2>
+    <div class="table-scroll step-scroll">
+      <table class="trace-table" id="byte-table">
+        <caption>Offset, meaning, decimal, and hex code of each byte</caption>
+        <thead>
+          <tr><th scope="col">Offset</th><th scope="col">Meaning</th><th scope="col">Decimal</th><th scope="col">Hex</th></tr>
+        </thead>
+        <tbody id="byte-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="behavior-h">
+    <h2 id="behavior-h">print_string / print_line behavior</h2>
+    <div class="explain-box" id="behavior-box" aria-live="polite"></div>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="tool-footer">CSIS 118B &middot; String bytes and length explorer &middot; part of the Unit 3 tool set.</div>
+</main>
+
+<script src="../shared/string-layout.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

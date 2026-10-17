@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assembler Phase Workbench &mdash; CSIS 118B Unit 3</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u03-tool">
+  <div class="tool-header">
+    <h1>Assembler phase workbench</h1>
+    <p class="tool-sub">Compare fixed NASM examples at preprocessing, assembly, and runtime.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Choose an example, predict which phase changes or evaluates its value, then reveal preprocessing, assembly, and runtime one at a time.</li>
+      <li>This is a teaching model that selects known, fixed examples; it does not evaluate arbitrary source code.</li>
+      <li>Changing the example resets it back to the predict-before-reveal state.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Choose an example</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="case-select">Example</label>
+        <select id="case-select">
+          <option value="equ">1. Numeric EQU</option>
+          <option value="define">2. Ungrouped text substitution (%define)</option>
+          <option value="grouped">3. Grouped use of a text substitution</option>
+          <option value="assign">4. Numeric preprocessor reassignment (%assign)</option>
+          <option value="runtime">5. Runtime arithmetic</option>
+        </select>
+      </div>
+      <button type="button" class="btn primary" id="step-btn">Next phase</button>
+      <button type="button" class="btn" id="reset-btn">Reset example</button>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="source-h">
+    <h2 id="source-h">Original source</h2>
+    <pre spellcheck="false"><code id="source-block" spellcheck="false"></code></pre>
+    <p class="tool-sub" style="margin:0.4rem 0 0;">This is a short snippet, not a complete, runnable program.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="phase-h">
+    <h2 id="phase-h"><span id="phase-label">Predict before revealing</span></h2>
+    <pre spellcheck="false"><code id="result-block" spellcheck="false"></code></pre>
+    <div class="explain-box" id="explain-box" aria-live="polite"></div>
+  </section>
+
+  <div class="instructions">
+    <h2>Related note</h2>
+    <p style="margin:0;">NASM uses <code>%</code> for a positive-integer remainder expression at assembly time, e.g. <code>10 % 3 = 1</code> &mdash; this is not MASM's <code>MOD</code> operator. This workbench does not implement a general expression editor; the five examples above are fixed.</p>
+  </div>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="tool-footer">CSIS 118B &middot; Assembler phase workbench &middot; part of the Unit 3 tool set.</div>
+</main>
+
+<script src="../shared/assembler-phases.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

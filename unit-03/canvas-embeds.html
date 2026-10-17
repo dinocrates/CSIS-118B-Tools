@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Embeds — Unit 3 — CSIS 118B</title>
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .embed-code {
+    background: #2b2b2b;
+    color: #f8f8f2;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 0.8rem 0.9rem;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    border: 1px solid #555;
+  }
+  .preview-frame {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+<main class="u03-tool">
+  <div class="course-header">
+    <span>CSIS 118B &middot; Computer Organization &amp; Assembly</span>
+    <a href="index.html">&larr; Unit 3 tools index</a>
+  </div>
+
+  <div class="tool-header">
+    <h1>Canvas Embeds — Unit 3</h1>
+    <p class="tool-sub">Copy an iframe snippet into the Canvas Rich Content Editor's HTML view, or use the fallback link if a Canvas page strips iframes.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>Published base URL</h2>
+    <p id="base-url-line" style="font-family:Consolas,monospace;"></p>
+    <p class="tool-sub" style="margin:0.4rem 0 0;">
+      This matches the base URL recorded in the repository's README (<code>https://dinocrates.github.io/CSIS-118B-Tools/</code>), the same
+      GitHub Pages site Unit 1 and Unit 2 already publish to. These Unit 3 paths are <strong>pending deployment</strong> until this
+      branch is merged to <code>main</code> and the Pages workflow runs &mdash; do not call them live before checking the deployed site.
+      If the repo is ever republished under a different owner, repository name, or custom domain, regenerate this page rather than
+      hand-editing the host in each snippet.
+    </p>
+  </div>
+
+  <section class="panel" id="tool-memory-trace">
+    <h2>1. Load&ndash;compute&ndash;store tracer <span class="tool-sub">(starting height 900px)</span></h2>
+    <p class="tool-sub">Lecture placement: Page 1, videos U03-05/06. Insertion label: <code>TOOL INSERT LOCATION: memory-trace</code>.</p>
+    <pre class="embed-code" id="code-memory-trace"></pre>
+    <button type="button" class="btn" data-copy="code-memory-trace">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-memory-trace" height="900" loading="lazy" title="Load-compute-store tracer preview"></iframe>
+  </section>
+
+  <section class="panel" id="tool-storage-layout">
+    <h2>2. Storage-layout explorer <span class="tool-sub">(starting height 900px)</span></h2>
+    <p class="tool-sub">Lecture placement: Page 2, U03-07/09/10. Insertion label: <code>TOOL INSERT LOCATION: storage-layout</code>.</p>
+    <pre class="embed-code" id="code-storage-layout"></pre>
+    <button type="button" class="btn" data-copy="code-storage-layout">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-storage-layout" height="900" loading="lazy" title="Storage-layout explorer preview"></iframe>
+  </section>
+
+  <section class="panel" id="tool-byte-interpretation">
+    <h2>3. Byte interpretation and extension <span class="tool-sub">(starting height 950px)</span></h2>
+    <p class="tool-sub">Lecture placement: Page 2, U03-08. Insertion label: <code>TOOL INSERT LOCATION: byte-interpretation</code>.</p>
+    <pre class="embed-code" id="code-byte-interpretation"></pre>
+    <button type="button" class="btn" data-copy="code-byte-interpretation">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-byte-interpretation" height="950" loading="lazy" title="Byte interpretation and extension preview"></iframe>
+  </section>
+
+  <section class="panel" id="tool-string-length">
+    <h2>4. String bytes and length explorer <span class="tool-sub">(starting height 900px)</span></h2>
+    <p class="tool-sub">Lecture placement: Page 2, U03-11; Page 3, U03-15 (same tool URL both places). Insertion label: <code>TOOL INSERT LOCATION: string-length</code>.</p>
+    <pre class="embed-code" id="code-string-length"></pre>
+    <button type="button" class="btn" data-copy="code-string-length">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-string-length" height="900" loading="lazy" title="String bytes and length explorer preview"></iframe>
+  </section>
+
+  <section class="panel" id="tool-assembler-workbench">
+    <h2>5. Assembler phase workbench <span class="tool-sub">(starting height 720px)</span></h2>
+    <p class="tool-sub">Lecture placement: Page 3, U03-14/16/17. Insertion label: <code>TOOL INSERT LOCATION: assembler-workbench</code>.</p>
+    <pre class="embed-code" id="code-assembler-workbench"></pre>
+    <button type="button" class="btn" data-copy="code-assembler-workbench">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-assembler-workbench" height="720" loading="lazy" title="Assembler phase workbench preview"></iframe>
+  </section>
+
+  <section class="panel">
+    <h2>Register-width review (reused from Unit 2)</h2>
+    <p class="tool-sub">The lecture's brief width review reuses the existing Unit 2 register-alias explorer; there is no new sixth Unit 3 tool for this.</p>
+    <pre class="embed-code" id="code-register-alias"></pre>
+    <button type="button" class="btn" data-copy="code-register-alias">Copy embed code</button>
+    <p class="tool-sub" style="margin:0.6rem 0 0.2rem;">Preview:</p>
+    <iframe class="preview-frame" id="preview-register-alias" height="1000" loading="lazy" title="Unit 2 register-alias explorer preview"></iframe>
+  </section>
+
+  <section class="panel">
+    <h2>Lecture placement table</h2>
+    <p class="tool-sub">Verified against the insertion-label mapping supplied with this task. The same hosted tool can be embedded in more than one lecture section (string-length appears twice).</p>
+    <div class="table-scroll">
+      <table class="trace-table">
+        <caption>Insertion label &rarr; tool &rarr; video sections</caption>
+        <thead><tr><th scope="col">Insertion label</th><th scope="col">Tool</th><th scope="col">Video sections</th></tr></thead>
+        <tbody>
+          <tr><td>TOOL INSERT LOCATION: memory-trace</td><td>Load&ndash;compute&ndash;store tracer</td><td>Page 1, U03-05/06</td></tr>
+          <tr><td>TOOL INSERT LOCATION: storage-layout</td><td>Storage-layout explorer</td><td>Page 2, U03-07/09/10</td></tr>
+          <tr><td>TOOL INSERT LOCATION: byte-interpretation</td><td>Byte interpretation and extension</td><td>Page 2, U03-08</td></tr>
+          <tr><td>TOOL INSERT LOCATION: string-length</td><td>String bytes and length explorer</td><td>Page 2, U03-11; Page 3, U03-15</td></tr>
+          <tr><td>TOOL INSERT LOCATION: assembler-workbench</td><td>Assembler phase workbench</td><td>Page 3, U03-14/16/17</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tool-sub" style="margin:0.6rem 0 0;">This table was built from this task's own placement list. The three Canvas lecture pages that are supposed to carry these
+      <code>TOOL INSERT LOCATION:</code> comments were not available in this repository or session, so the actual comment text inside
+      those lecture pages has not been inspected or edited &mdash; only this mapping has been verified against the task's instructions.
+      Leave the Canvas editing itself to the instructor.</p>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite"></div>
+  <div class="tool-footer">CSIS 118B &middot; Unit 3 Canvas embed snippets.</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // Matches the base URL recorded in README.md for this repository's GitHub Pages site.
+  // Unit 3 paths are pending deployment (see the note above) until merged to main.
+  var BASE = 'https://dinocrates.github.io/CSIS-118B-Tools/';
+
+  var TOOLS = [
+    { key: 'memory-trace', path: 'unit-03/memory-trace/', title: 'Load–compute–store tracer', height: 900 },
+    { key: 'storage-layout', path: 'unit-03/storage-layout/', title: 'Storage-layout explorer', height: 900 },
+    { key: 'byte-interpretation', path: 'unit-03/byte-interpretation/', title: 'Byte interpretation and extension', height: 950 },
+    { key: 'string-length', path: 'unit-03/string-length/', title: 'String bytes and length explorer', height: 900 },
+    { key: 'assembler-workbench', path: 'unit-03/assembler-workbench/', title: 'Assembler phase workbench', height: 720 }
+  ];
+
+  document.getElementById('base-url-line').textContent = BASE;
+
+  TOOLS.forEach(function (tool) {
+    var fullUrl = BASE + tool.path;
+    var embedSrc = fullUrl + '?embed=1';
+    var snippet =
+      '<iframe src="' + embedSrc + '"\n' +
+      '        width="100%" height="' + tool.height + '"\n' +
+      '        loading="lazy"\n' +
+      '        style="border:none;"\n' +
+      '        title="' + tool.title + '"></iframe>\n' +
+      '<p><a href="' + fullUrl + '" target="_blank" rel="noopener">Open ' + tool.title + ' in a new tab</a></p>';
+
+    document.getElementById('code-' + tool.key).textContent = snippet;
+
+    var frame = document.getElementById('preview-' + tool.key);
+    frame.src = embedSrc;
+  });
+
+  var raFullUrl = BASE + 'unit-02/index.html?embed=1#demo2';
+  var raSnippet =
+    '<iframe src="' + raFullUrl + '"\n' +
+    '        width="100%" height="1000"\n' +
+    '        loading="lazy"\n' +
+    '        style="border:none;"\n' +
+    '        title="Unit 2 register-alias explorer"></iframe>\n' +
+    '<p><a href="' + raFullUrl + '" target="_blank" rel="noopener">Open the register-alias explorer in a new tab</a></p>';
+  document.getElementById('code-register-alias').textContent = raSnippet;
+  document.getElementById('preview-register-alias').src = raFullUrl;
+
+  var statusLine = document.getElementById('status-line');
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = document.getElementById(btn.getAttribute('data-copy')).textContent;
+      function done() {
+        statusLine.textContent = 'Copied embed code for ' + btn.closest('section').querySelector('h2').textContent.trim() + '.';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); }
+    catch (e) { statusLine.textContent = 'Copy failed — select the code and copy manually.'; }
+    document.body.removeChild(ta);
+  }
+})();
+</script>
+</body>
+</html>

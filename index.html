@@ -351,6 +351,76 @@ var TOOLS = [
       { sig: '127 + 1 (8-bit)', what: 'no unsigned carry, but signed overflow — CF and OF disagree' },
     ],
   },
+  {
+    unit: 'UNIT 3 — MEMORY & THE ASSEMBLER',
+    title: 'Load–Compute–Store Tracer',
+    file: 'unit-03/memory-trace/index.html',
+    embedHeight: 900,
+    desc: 'Step a fixed LEA / load / ADD / store sequence one instruction at a time, predicting whether EAX, RBX, ' +
+          'count, or result changes before each reveal. Illustrates that LEA only computes an address, and that ' +
+          'ordinary MOV cannot copy directly between two memory operands.',
+    demos: [
+      { sig: 'count=100, addend=20', what: 'EAX ends at 120; count stays 100; result becomes 120' },
+      { sig: 'count=4294967295, addend=1', what: 'ADD wraps modulo 2^32 — EAX and result become 0' },
+      { sig: 'addend=0', what: 'the computed value passes through unchanged' },
+    ],
+  },
+  {
+    unit: 'UNIT 3 — DATA DECLARATIONS',
+    title: 'Storage-Layout Explorer',
+    file: 'unit-03/storage-layout/index.html',
+    embedHeight: 900,
+    desc: 'Choose a DB/DW/DD/DQ width and 1–8 integer initializers, then predict the total bytes and an element’s ' +
+          'byte offset before revealing the little-endian byte layout. Covers the accepted two’s-complement range ' +
+          'per width and why NASM does not type-check a too-wide later access.',
+    demos: [
+      { sig: 'dd 10, 20, 30, 40', what: '16 bytes; index 3 starts at offset 12 (0x0C), not 0x0B' },
+      { sig: 'dd 0x12345678', what: 'little-endian bytes 78, 56, 34, 12' },
+      { sig: 'dq 18446744073709551615', what: 'eight 0xFF bytes, shown without rounding' },
+    ],
+  },
+  {
+    unit: 'UNIT 3 — BYTES & EXTENSION',
+    title: 'Byte Interpretation and Extension',
+    file: 'unit-03/byte-interpretation/index.html',
+    embedHeight: 950,
+    desc: 'Compare unsigned and signed readings of one stored byte, then compare MOVZX EDI, MOVSX RDI, and MOVSX ' +
+          'EDI widening the same byte into a 64-bit register — including the trap where MOVSX to EDI clears the ' +
+          'upper half of RDI instead of producing a negative 64-bit value.',
+    demos: [
+      { sig: '0xFF → MOVZX EDI', what: 'RDI = 0x00000000000000FF, displayed 255' },
+      { sig: '0xFF → MOVSX RDI', what: 'RDI = 0xFFFFFFFFFFFFFFFF, displayed −1' },
+      { sig: '0xFF → MOVSX EDI', what: 'RDI = 0x00000000FFFFFFFF, displayed 4294967295 — the trap' },
+    ],
+  },
+  {
+    unit: 'UNIT 3 — STRINGS',
+    title: 'String Bytes and Length Explorer',
+    file: 'unit-03/string-length/index.html',
+    embedHeight: 900,
+    desc: 'Count visible ASCII characters versus storage bytes versus the assembly-time $ - label span, with safe ' +
+          'NASM source generation (switching quote style, or falling back to numeric bytes) for text containing ' +
+          'quote characters.',
+    demos: [
+      { sig: '"Hi" + LF + NUL', what: 'bytes 48, 69, 0A, 00 — 2 visible characters, 4 storage bytes' },
+      { sig: 'no NUL terminator', what: 'flagged as a print_string contract violation, not simulated as a crash' },
+      { sig: 'text containing both quote styles', what: 'falls back to numeric byte literals so the source stays valid' },
+    ],
+  },
+  {
+    unit: 'UNIT 3 — ASSEMBLER PHASES',
+    title: 'Assembler Phase Workbench',
+    file: 'unit-03/assembler-workbench/index.html',
+    embedHeight: 720,
+    desc: 'Compare five fixed NASM examples (EQU, %define, grouped %define, %assign, and a runtime ADD) at ' +
+          'preprocessing, assembly, and runtime, one phase at a time. This teaching model selects known examples; ' +
+          'it does not evaluate arbitrary source.',
+    demos: [
+      { sig: '%define LIMIT 3+2; LIMIT*4', what: 'expands to tokens "3 + 2 * 4" → assembles to 11, not 20' },
+      { sig: '%define LIMIT 3+2; (LIMIT)*4', what: 'grouping at the use site gives (3+2)*4 = 20' },
+      { sig: '%assign N 3 ... %assign N N+1', what: 'the later reassignment does not retroactively change the earlier dd' },
+    ],
+  },
 ];
 
 // ─── embed URL: resolve against where this page is actually hosted ──────────

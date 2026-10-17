@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Load&ndash;Compute&ndash;Store Tracer &mdash; CSIS 118B Unit 3</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u03-tool">
+  <div class="tool-header">
+    <h1>Load&ndash;compute&ndash;store tracer</h1>
+    <p class="tool-sub">Predict which state changes after each instruction, then step through LEA, a load, ADD, and a store.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Set an initial <code>count</code> and an addend, then <strong>Apply / Reset</strong> to start a new trace.</li>
+      <li>Predict whether EAX, RBX, <code>count</code>, or <code>result</code> changes, then click <strong>Step instruction</strong> to reveal it.</li>
+      <li>This is a teaching model: address <code>0x1000</code> is illustrative, not an actual x86 Playground address.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Set up the trace</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="count-input">Initial count (unsigned DWORD)</label>
+        <input type="text" id="count-input" value="100" inputmode="numeric" aria-describedby="count-example">
+      </div>
+      <div class="field">
+        <label for="addend-input">Addend (0&ndash;100000)</label>
+        <input type="text" id="addend-input" value="20" inputmode="numeric" aria-describedby="addend-example">
+      </div>
+      <button type="button" class="btn primary" id="apply-btn">Apply / Reset</button>
+      <button type="button" class="btn" id="step-btn">Step instruction</button>
+    </div>
+    <p class="tool-sub" id="count-example" style="margin:0 0 0.2rem;">count accepts 0 through 4294967295 (decimal, or 0x/0b/0o).</p>
+    <p class="tool-sub" id="addend-example" style="margin:0 0 0.4rem;">addend accepts 0 through 100000.</p>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="code-h">
+    <h2 id="code-h">Instruction sequence</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false"></code></pre>
+    <p class="tool-sub" style="margin:0.4rem 0 0;">Initialized data (illustrative): <code>count: dd 100</code> and <code>result: dd 0</code>. Ordinary MOV cannot copy directly between two memory operands &mdash; that is why the sequence loads <code>count</code> into EAX before it can be stored anywhere else.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="state-h">
+    <h2 id="state-h">Current state</h2>
+    <div class="readout-grid">
+      <div class="readout">
+        <span class="readout-label">EAX</span>
+        <output class="readout-value" id="out-eax">unspecified</output>
+      </div>
+      <div class="readout">
+        <span class="readout-label">RBX</span>
+        <output class="readout-value" id="out-rbx">unspecified</output>
+      </div>
+      <div class="readout">
+        <span class="readout-label">count</span>
+        <output class="readout-value" id="out-count">100</output>
+      </div>
+      <div class="readout">
+        <span class="readout-label">result</span>
+        <output class="readout-value" id="out-result">0</output>
+      </div>
+    </div>
+    <div class="explain-box" id="step-explain" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="trace-h">
+    <h2 id="trace-h">Cumulative trace</h2>
+    <div class="table-scroll step-scroll">
+      <table class="trace-table" id="trace-table">
+        <caption>One row per instruction executed so far</caption>
+        <thead>
+          <tr><th scope="col">After</th><th scope="col">EAX</th><th scope="col">count</th><th scope="col">result</th><th scope="col">RBX</th></tr>
+        </thead>
+        <tbody id="trace-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true">Ready. Predict before stepping.</div>
+
+  <div class="tool-footer">CSIS 118B &middot; Load&ndash;compute&ndash;store tracer &middot; part of the Unit 3 tool set. This is a local teaching model, not a connection to the x86 Playground.</div>
+</main>
+
+<script src="../shared/integer-input.js"></script>
+<script src="../shared/memory-model.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

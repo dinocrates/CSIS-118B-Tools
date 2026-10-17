@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Byte Interpretation and Extension &mdash; CSIS 118B Unit 3</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u03-tool">
+  <div class="tool-header">
+    <h1>Byte interpretation and extension</h1>
+    <p class="tool-sub">Set an 8-bit pattern, then compare unsigned and signed readings, and three ways of widening it into a 64-bit register.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Toggle a bit, or load a byte pattern by decimal, 0x hex, 0b binary, or 0o octal.</li>
+      <li>A negative input is not a byte pattern &mdash; signed interpretation is an <em>output</em>, computed from the stored pattern.</li>
+      <li>Compare MOVZX and MOVSX into RDI/EDI on the same stored byte.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Set the byte</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="value-input">Byte pattern (0&ndash;255; decimal or 0x/0b/0o)</label>
+        <input type="text" id="value-input" value="0xFF" inputmode="text">
+      </div>
+      <button type="button" class="btn primary" id="apply-btn">Apply</button>
+      <button type="button" class="btn" id="reset-btn">Reset</button>
+    </div>
+    <div class="preset-row" role="group" aria-label="Preset byte patterns">
+      <button type="button" class="btn" data-preset="0x00">00</button>
+      <button type="button" class="btn" data-preset="0x7F">7F</button>
+      <button type="button" class="btn" data-preset="0x80">80</button>
+      <button type="button" class="btn" data-preset="0xFF">FF</button>
+    </div>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="bits-h">
+    <h2 id="bits-h">Bit pattern (click a bit to flip it)</h2>
+    <div class="bit-grid" id="bit-grid" role="group" aria-label="Eight bits, bit 7 (most significant) through bit 0 (least significant)"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="repr-h">
+    <h2 id="repr-h">Representations of the stored byte</h2>
+    <div class="readout-grid">
+      <div class="readout">
+        <span class="readout-label">Binary</span>
+        <output class="readout-value" id="out-binary"></output>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Hexadecimal</span>
+        <output class="readout-value" id="out-hex"></output>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Unsigned decimal</span>
+        <output class="readout-value" id="out-unsigned"></output>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Signed decimal (two's complement)</span>
+        <output class="readout-value" id="out-signed"></output>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="ext-h">
+    <h2 id="ext-h">Widening the same stored byte into a 64-bit register</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false">movzx edi, byte [rel sample]
+movsx rdi, byte [rel sample]
+movsx edi, byte [rel sample]</code></pre>
+    <div class="table-scroll">
+      <table class="trace-table" id="ext-table">
+        <caption>Full 64-bit RDI pattern and the resulting numeric interpretation</caption>
+        <thead>
+          <tr><th scope="col">Operation</th><th scope="col">Full RDI (16 hex digits)</th><th scope="col">Displayed value</th></tr>
+        </thead>
+        <tbody id="ext-table-body"></tbody>
+      </table>
+    </div>
+    <div class="explain-box" id="trap-explain" aria-live="polite"></div>
+    <p class="tool-sub" style="margin:0.6rem 0 0;">Related: <code>movsxd</code> sign-extends a signed DWORD directly to 64 bits (e.g. <code>movsxd rax, dword [rel n]</code>) &mdash; it is not simulated separately here, only noted.</p>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <div class="tool-footer">CSIS 118B &middot; Byte interpretation and extension &middot; part of the Unit 3 tool set.</div>
+</main>
+
+<script src="../shared/integer-input.js"></script>
+<script src="../shared/byte-extension.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
