@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiplication Register-Pair Lab &mdash; CSIS 118B Unit 4</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u04-tool">
+  <div class="tool-header">
+    <h1>Multiplication register-pair lab</h1>
+    <p class="tool-sub">Compare unsigned MUL and signed IMUL &mdash; one-operand full products, and truncated two-/three-operand IMUL.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>One-operand MUL/IMUL always produces a <strong>full</strong> double-width product split across a register pair (e.g. DX:AX). A low-width overflow flag does not mean the full product is wrong.</li>
+      <li>Two- and three-operand IMUL are signed-only, keep only the destination-width (truncated) result, and are not offered at 8-bit width in this model.</li>
+      <li>SF, ZF, AF, and PF are <strong>undefined</strong> after MUL/IMUL &mdash; not zero, not stale. This tool marks them explicitly rather than guessing.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Set up the operation</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="width-select">Operand width</label>
+        <select id="width-select">
+          <option value="8" selected>8-bit</option>
+          <option value="16">16-bit</option>
+          <option value="32">32-bit</option>
+          <option value="64">64-bit</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="form-select">Instruction form</label>
+        <select id="form-select">
+          <option value="one" selected>One-operand (full product)</option>
+          <option value="two">Two-operand IMUL (truncated, signed)</option>
+          <option value="three">Three-operand IMUL reference (signed, with immediate)</option>
+        </select>
+      </div>
+      <div class="field" id="mode-field">
+        <label for="mode-select">Interpretation</label>
+        <select id="mode-select">
+          <option value="unsigned" selected>Unsigned (MUL)</option>
+          <option value="signed">Signed (IMUL)</option>
+        </select>
+      </div>
+    </div>
+    <div class="controls-row">
+      <div class="field" id="a-field">
+        <label for="a-input" id="a-label">A (accumulator value)</label>
+        <input type="text" id="a-input" value="48">
+      </div>
+      <div class="field" id="b-field">
+        <label for="b-input" id="b-label">B (explicit source)</label>
+        <input type="text" id="b-input" value="4">
+      </div>
+      <div class="field" id="imm-field" style="display:none;">
+        <label for="imm-input">Immediate</label>
+        <input type="text" id="imm-input" value="10">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="reveal-btn">Reveal product</button>
+      <button type="button" class="btn" id="reset-btn">Reset to default</button>
+    </div>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="code-h">
+    <h2 id="code-h">Instruction snippet</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false"></code></pre>
+    <p class="scope-note">Instruction snippet &mdash; one instruction in isolation, not a complete program.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="result-h">
+    <h2 id="result-h">Result</h2>
+    <div class="readout-grid" id="result-grid"></div>
+    <div class="explain-box" id="result-explain" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="flags-h">
+    <h2 id="flags-h">Flags</h2>
+    <div class="readout-grid" id="flags-grid"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="compare-h">
+    <h2 id="compare-h">Why CF/OF do not mean "the full product is wrong"</h2>
+    <p class="tool-sub">Byte signed 48 &times; 4: the full 16-bit product (AX = 0x00C0 = 192) is correct either way. CF/OF = 1 only reports that the <em>low 8 bits alone</em>, read as a signed AL, cannot represent 192 (it reads as &minus;64). The full double-width product is still exactly right.</p>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true">Ready. Default: unsigned byte MUL, full-product form, A=48, B=4.</div>
+</main>
+
+<script src="../shared/width-ops.js"></script>
+<script src="../shared/integer-input.js"></script>
+<script src="../shared/multiplication-model.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

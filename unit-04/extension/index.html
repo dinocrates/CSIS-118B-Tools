@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zero/Sign Extension Across Widths &mdash; CSIS 118B Unit 4</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u04-tool">
+  <div class="tool-header">
+    <h1>Zero/sign extension across widths</h1>
+    <p class="tool-sub">Generalizes the Unit 3 byte-interpretation tool's fixed 8-bit&rarr;EDI/RDI scenarios to any source width, any destination width, and MOVSXD.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Pick a source width/value and a destination width, then choose zero-extend (MOVZX-style) or sign-extend (MOVSX/MOVSXD-style).</li>
+      <li>A 32-bit destination write also clears the parent 64-bit register's upper half; a 64-bit destination write is the full parent register. This is the MOVSX-to-EDI "trap."</li>
+      <li>For the single fixed 8-bit source case with a bit-toggle UI, see the linked Unit 3 tool below &mdash; this page adds the general width picker and MOVSXD, which that tool does not have.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="reuse-h">
+    <h2 id="reuse-h">Related Unit 3 tool (reused, not duplicated)</h2>
+    <p class="tool-sub">Unit 3's <a href="../../unit-03/byte-interpretation/index.html" target="_blank" rel="noopener">Byte interpretation and extension</a> tool already covers unsigned/signed readings of a single toggle-able byte and its MOVZX EDI / MOVSX RDI / MOVSX EDI widening. Use it for that interactive bit-by-bit exploration; use this page for other source widths, other destination widths, and MOVSXD.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Set up the extension</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="src-width-select">Source width</label>
+        <select id="src-width-select">
+          <option value="8" selected>8-bit</option>
+          <option value="16">16-bit</option>
+          <option value="32">32-bit</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="src-value-input">Source value (value or bit pattern)</label>
+        <input type="text" id="src-value-input" value="0xF0">
+      </div>
+      <div class="field">
+        <label for="dest-width-select">Destination width</label>
+        <select id="dest-width-select"></select>
+      </div>
+      <div class="field">
+        <label for="mode-select">Extension</label>
+        <select id="mode-select">
+          <option value="zero" selected>Zero-extend (MOVZX)</option>
+          <option value="sign">Sign-extend (MOVSX/MOVSXD)</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="reveal-btn">Reveal</button>
+      <button type="button" class="btn" id="reset-btn">Reset</button>
+    </div>
+    <p class="preset-row" role="group" aria-label="Preset source bytes" id="preset-row"></p>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="code-h">
+    <h2 id="code-h">Instruction snippet</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false"></code></pre>
+    <p class="scope-note">Instruction snippet &mdash; one instruction in isolation, not a complete program.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="result-h">
+    <h2 id="result-h">Result</h2>
+    <div class="readout-grid" id="result-grid"></div>
+    <div class="explain-box" id="result-explain" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="required-h">
+    <h2 id="required-h">Required worked comparison (source 0xF0)</h2>
+    <p class="tool-sub" style="margin:0 0 0.5rem;">Four fixed operations on the same stored byte 0xF0, chained so the third row's EAX feeds the fourth row's MOVSXD.</p>
+    <div class="table-scroll">
+      <table class="trace-table" id="required-table">
+        <caption>Operation &rarr; full parent/destination bits &rarr; interpretation</caption>
+        <thead><tr><th scope="col">Operation</th><th scope="col">Full parent/destination bits</th><th scope="col">Interpretation</th></tr></thead>
+        <tbody id="required-table-body"></tbody>
+      </table>
+    </div>
+    <p class="tool-sub" style="margin:0.6rem 0 0;">Unsigned DWORD&rarr;QWORD widening normally uses a plain 32-bit write (there is no <code>movzx rax, eax</code> encoding) &mdash; any 32-bit destination write already zero-extends the upper half.</p>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true">Ready.</div>
+</main>
+
+<script src="../shared/width-ops.js"></script>
+<script src="../shared/integer-input.js"></script>
+<script src="../shared/extension-model.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

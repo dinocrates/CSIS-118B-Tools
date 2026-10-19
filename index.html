@@ -421,6 +421,61 @@ var TOOLS = [
       { sig: '%assign N 3 ... %assign N N+1', what: 'the later reassignment does not retroactively change the earlier dd' },
     ],
   },
+  {
+    unit: 'UNIT 4 — DATA MOVEMENT',
+    title: 'Movement Instruction Lab',
+    file: 'unit-04/movement/index.html',
+    embedHeight: 1300,
+    desc: 'Step curated MOV/XCHG trace scenarios — a DWORD memory copy, a register exchange, a failed two-MOV ' +
+          '"swap", a memory exchange through a register, and three independent partial-register writes — plus a ' +
+          'curated bank of valid, invalid, ambiguous, and storage-overreading MOV forms.',
+    demos: [
+      { sig: 'xchg eax, ecx (RAX=10, RCX=20)', what: 'both values survive, swapped: RAX=20, RCX=10' },
+      { sig: 'mov eax, ecx; mov ecx, eax (same start)', what: 'NOT a swap — both end at 20; the original 10 is gone' },
+      { sig: 'mov eax, 5 after RAX=0x1122334455667788', what: 'RAX becomes 0x0000000000000005 — EAX clears the upper half, unlike AL/AX' },
+    ],
+  },
+  {
+    unit: 'UNIT 4 — ARITHMETIC & FLAGS',
+    title: 'Arithmetic and Flags Lab',
+    file: 'unit-04/arithmetic-flags/index.html',
+    embedHeight: 1150,
+    desc: 'ADD, SUB, INC, DEC, and NEG at 8/16/32/64 bits with exact CF/OF/ZF/SF, distinguishing a freshly computed ' +
+          'CF from one preserved by INC/DEC, plus AF/PF as a secondary reference — all exact above Number.MAX_SAFE_INTEGER.',
+    demos: [
+      { sig: 'byte 127 + 1', what: 'result 0x80, OF=1 (signed overflow), CF=0 (no unsigned carry)' },
+      { sig: 'INC byte 255, incoming CF=1', what: 'result 0x00, CF stays 1 (preserved, not recomputed) — ZF=1, AF=1, PF=1' },
+      { sig: '0xFFFFFFFFFFFFFFFF + 1 at 64-bit', what: 'stores exactly 0 with CF=1 — never rounded through Number' },
+    ],
+  },
+  {
+    unit: 'UNIT 4 — MULTIPLICATION',
+    title: 'Multiplication Register-Pair Lab',
+    file: 'unit-04/multiplication/index.html',
+    embedHeight: 1050,
+    desc: 'One-operand full-product MUL/IMUL into AX / DX:AX / EDX:EAX / RDX:RAX, plus truncated two- and ' +
+          'three-operand signed IMUL (not offered at 8-bit). Exact 2w-bit products via BigInt, so a QWORD×QWORD ' +
+          '128-bit product never loses precision.',
+    demos: [
+      { sig: 'unsigned byte 48 × 4', what: 'AX = 0x00C0, CF/OF = 0/0' },
+      { sig: 'signed byte 48 × 4', what: 'same bits AX = 0x00C0, but CF/OF = 1/1 — AL alone reads as −64, not 192' },
+      { sig: 'unsigned QWORD (2⁶⁴−1) × (2⁶⁴−1)', what: 'exact 128-bit product; high = 0xFFFFFFFFFFFFFFFE, low = 1' },
+    ],
+  },
+  {
+    unit: 'UNIT 4 — DIVISION',
+    title: 'Division Preparation Lab',
+    file: 'unit-04/division/index.html',
+    embedHeight: 1050,
+    desc: 'Prepare a dividend by narrow zero/sign-extension (CBW/CWD/CDQ/CQO) or by typing both halves of a ' +
+          'high:low register pair directly, then divide with DIV or IDIV — with divide-error detection for a zero ' +
+          'divisor or an out-of-range quotient, including signed-minimum ÷ −1.',
+    demos: [
+      { sig: 'byte IDIV −48 / 5', what: 'AL = 0xF7 (−9), AH = 0xFD (−3)' },
+      { sig: 'byte IDIV −128 / −1', what: 'Divide error — quotient 128 cannot fit in signed AL' },
+      { sig: 'DWORD DIV manual high=1, low=0, divisor=2', what: 'full dividend 4294967296 → quotient 2147483648, remainder 0' },
+    ],
+  },
 ];
 
 // ─── embed URL: resolve against where this page is actually hosted ──────────
