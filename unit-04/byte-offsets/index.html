@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Byte Offsets, Arbitrary Access, and Store &mdash; CSIS 118B Unit 4</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u04-tool">
+  <div class="tool-header">
+    <h1>Byte offsets, arbitrary access, and store</h1>
+    <p class="tool-sub">Adds an arbitrary byte-offset + access-width read (independent of element boundaries, with out-of-bounds detection) and a store simulation on top of Unit 3's storage-layout model.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Define 1&ndash;8 initializers at a chosen element width, then read an arbitrary byte offset at an arbitrary access width &mdash; a raw byte offset is <strong>not</strong> an element number.</li>
+      <li><strong>Store</strong> simulates writing a new value into one existing element and re-renders the little-endian byte layout.</li>
+      <li>An access that would run past the end of the declared storage is flagged; this tool does not claim the CPU checks bounds automatically.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="reuse-h">
+    <h2 id="reuse-h">Related Unit 3 tool (reused, not duplicated)</h2>
+    <p class="tool-sub">Unit 3's <a href="../../unit-03/storage-layout/index.html" target="_blank" rel="noopener">Storage-layout explorer</a> already covers width/initializer selection, an element's byte offset, and the little-endian layout. This page is built directly on top of that tool's own model (<code>unit-03/shared/storage-layout.js</code>, reused via <code>require</code>/script tag, not duplicated) and adds two things it does not have: an access at an arbitrary offset/width independent of element boundaries, and a store simulation.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Define the data</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="width-select">Element width</label>
+        <select id="width-select">
+          <option value="1">db &middot; BYTE &middot; 1 byte</option>
+          <option value="2">dw &middot; WORD &middot; 2 bytes</option>
+          <option value="4" selected>dd &middot; DWORD &middot; 4 bytes</option>
+          <option value="8">dq &middot; QWORD &middot; 8 bytes</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="values-input">Initializers (1&ndash;8 integers, comma-separated)</label>
+        <input type="text" id="values-input" value="100, 200, 300, 400">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="apply-btn">Apply initializers</button>
+      <button type="button" class="btn" id="reset-btn">Reset</button>
+    </div>
+    <p class="preset-row" role="group" aria-label="Presets" id="preset-row"></p>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="access-h">
+    <h2 id="access-h">Arbitrary-offset read</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="offset-input">Byte offset</label>
+        <input type="text" id="offset-input" value="8" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="access-width-select">Access width</label>
+        <select id="access-width-select">
+          <option value="1">1 byte</option>
+          <option value="2">2 bytes (WORD)</option>
+          <option value="4" selected>4 bytes (DWORD)</option>
+          <option value="8">8 bytes (QWORD)</option>
+        </select>
+      </div>
+      <button type="button" class="btn primary" id="read-btn">Read access</button>
+    </div>
+    <div class="explain-box" id="access-explain" aria-live="polite">Set initializers, then read an offset.</div>
+  </section>
+
+  <section class="panel" aria-labelledby="store-h">
+    <h2 id="store-h">Store simulation</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="store-index-input">Element index (zero-based)</label>
+        <input type="text" id="store-index-input" value="3" inputmode="numeric">
+      </div>
+      <div class="field">
+        <label for="store-value-input">New value</label>
+        <input type="text" id="store-value-input" value="999">
+      </div>
+      <button type="button" class="btn primary" id="store-btn">Store</button>
+    </div>
+    <div class="explain-box" id="store-explain" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="bytes-h">
+    <h2 id="bytes-h">Emitted bytes, increasing address order</h2>
+    <p class="tool-sub" style="margin:0 0 0.5rem;">Little endian within each multi-byte value: the least significant byte of each element comes first.</p>
+    <div class="table-scroll step-scroll">
+      <table class="trace-table" id="byte-table">
+        <caption>Byte offset = index &times; bytes per element</caption>
+        <thead><tr><th scope="col">Element index</th><th scope="col">Byte offset</th><th scope="col">Hex byte</th><th scope="col">Boundary</th></tr></thead>
+        <tbody id="byte-table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true">Ready.</div>
+</main>
+
+<script src="../../unit-03/shared/integer-input.js"></script>
+<script src="../../unit-03/shared/storage-layout.js"></script>
+<script src="../shared/storage-access-model.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

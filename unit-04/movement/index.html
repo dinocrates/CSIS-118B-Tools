@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movement Instruction Lab &mdash; CSIS 118B Unit 4</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u04-tool">
+  <div class="tool-header">
+    <h1>Movement instruction lab</h1>
+    <p class="tool-sub">Pick a trace scenario, predict which storage location changes, then step one MOV/XCHG instruction at a time.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Choose a scenario, then click <strong>Step instruction</strong> to execute the next instruction and reveal what changed.</li>
+      <li><strong>Reset scenario</strong> returns to that scenario's initial state and instruction pointer.</li>
+      <li>This is a limited, curated example bank &mdash; not a general NASM validator or a full x86-64 simulator. Symbolic names like <code>source</code> and <code>copy</code> are not fixed runtime addresses.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Scenario</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="scenario-select">Trace scenario</label>
+        <select id="scenario-select"></select>
+      </div>
+      <button type="button" class="btn" id="reset-btn">Reset scenario</button>
+      <button type="button" class="btn primary" id="step-btn">Step instruction</button>
+    </div>
+    <p class="scope-note" id="scenario-note"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="code-h">
+    <h2 id="code-h">Instruction sequence</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false"></code></pre>
+    <p class="tool-sub" id="completion-note" style="margin:0.4rem 0 0;" aria-live="polite"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="state-h">
+    <h2 id="state-h">Register and memory state</h2>
+    <div class="readout-grid" id="state-grid"></div>
+    <div class="explain-box" id="step-explain" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="flags-h">
+    <h2 id="flags-h">Unchanged flags</h2>
+    <p class="tool-sub" style="margin:0 0 0.5rem;">MOV and XCHG do not touch the arithmetic flags. These stay fixed at their initialized values through every step of every scenario above.</p>
+    <div class="readout-grid" id="flags-grid"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="trace-h">
+    <h2 id="trace-h">Cumulative trace</h2>
+    <div class="table-scroll step-scroll">
+      <table class="trace-table" id="trace-table">
+        <caption>One row per instruction executed so far in this scenario</caption>
+        <thead><tr id="trace-head-row"></tr></thead>
+        <tbody id="trace-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="forms-h">
+    <h2 id="forms-h">MOV-form operand legality bank</h2>
+    <p class="tool-sub" style="margin:0 0 0.5rem;">A curated set of example MOV forms &mdash; valid, invalid, ambiguous, or syntactically valid but reading the wrong bytes. Assumes <code>source</code>/<code>copy</code> are DWORD objects and <code>word_object</code> has only a WORD allocated, immediately followed by other storage.</p>
+    <div class="controls-row">
+      <div class="field">
+        <label for="form-select">Instruction form</label>
+        <select id="form-select"></select>
+      </div>
+      <button type="button" class="btn primary" id="reveal-form-btn">Reveal classification</button>
+    </div>
+    <div class="explain-box" id="form-explain" aria-live="polite">Pick a form and reveal its classification.</div>
+    <p class="tool-sub" style="margin:0.6rem 0 0;">Related: <code>lea rsi, [rel source]</code> obtains an address without reading the stored value &mdash; brackets are part of effective-address syntax; the instruction determines whether memory data is read. MOV/LEA do not change arithmetic flags.</p>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true">Ready. Choose a scenario and predict before stepping.</div>
+</main>
+
+<script src="../shared/width-ops.js"></script>
+<script src="../shared/movement-model.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

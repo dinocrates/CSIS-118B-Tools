@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arithmetic and Flags Lab &mdash; CSIS 118B Unit 4</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u04-tool">
+  <div class="tool-header">
+    <h1>Arithmetic and flags lab</h1>
+    <p class="tool-sub">ADD, SUB, INC, DEC, and NEG at 8/16/32/64 bits &mdash; exact CF/OF/ZF/SF, with AF/PF as a secondary reference.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li><strong>CF</strong> reports unsigned carry/borrow; <strong>OF</strong> reports signed range failure; <strong>ZF</strong> tests zero; <strong>SF</strong> reports the result's high bit. ADD and SUB compute both CF and OF from the same operation &mdash; there is no separate signed/unsigned ADD instruction.</li>
+      <li>INC/DEC <em>preserve</em> whatever CF already was; NEG and SUB compute CF fresh. Watch the "(preserved)" label.</li>
+      <li>This is a teaching model of one instruction at a time, not a running program.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Set up the operation</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="width-select">Width</label>
+        <select id="width-select">
+          <option value="8" selected>8-bit (AL / BL)</option>
+          <option value="16">16-bit (AX / BX)</option>
+          <option value="32">32-bit (EAX / EBX)</option>
+          <option value="64">64-bit (RAX / RBX)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="op-select">Operation</label>
+        <select id="op-select">
+          <option value="ADD" selected>ADD</option>
+          <option value="SUB">SUB</option>
+          <option value="INC">INC</option>
+          <option value="DEC">DEC</option>
+          <option value="NEG">NEG</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="a-input">Destination A (value or bit pattern)</label>
+        <input type="text" id="a-input" value="127" inputmode="text">
+      </div>
+      <div class="field" id="b-field">
+        <label for="b-input">Source B (value or bit pattern)</label>
+        <input type="text" id="b-input" value="1" inputmode="text">
+      </div>
+      <div class="field" id="cf-field">
+        <label for="cf-select">Incoming CF</label>
+        <select id="cf-select">
+          <option value="0" selected>0</option>
+          <option value="1">1</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="reveal-btn">Reveal result</button>
+      <button type="button" class="btn" id="reset-btn">Reset</button>
+    </div>
+    <p class="tool-sub" style="margin:0 0 0.3rem;">A field accepts a signed decimal spelling or an unsigned bit pattern for the chosen width (e.g. byte <code>-1</code> and byte <code>0xFF</code> select the same eight bits).</p>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="preset-h">
+    <h2 id="preset-h">Worked presets</h2>
+    <div class="preset-row" role="group" aria-label="Worked preset cases" id="preset-row"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="code-h">
+    <h2 id="code-h">Instruction snippet</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false"></code></pre>
+    <p class="scope-note">Instruction snippet &mdash; one instruction in isolation, not a complete program.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="bits-h">
+    <h2 id="bits-h">Stored result bits</h2>
+    <div class="table-scroll"><pre spellcheck="false" style="margin:0;"><code id="bit-strip" spellcheck="false"></code></pre></div>
+  </section>
+
+  <section class="panel" aria-labelledby="result-h">
+    <h2 id="result-h">Result</h2>
+    <div class="readout-grid">
+      <div class="readout">
+        <span class="readout-label">Stored result (hex)</span>
+        <output class="readout-value" id="out-hex"></output>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Unsigned interpretation</span>
+        <output class="readout-value" id="out-unsigned"></output>
+      </div>
+      <div class="readout">
+        <span class="readout-label">Signed interpretation</span>
+        <output class="readout-value" id="out-signed"></output>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="flags-h">
+    <h2 id="flags-h">Flags</h2>
+    <div class="readout-grid" id="flags-grid"></div>
+    <div class="explain-box" id="flags-explain" aria-live="polite"></div>
+    <p class="tool-sub" style="margin:0.6rem 0 0;">Secondary reference (rarely tested directly in this course):</p>
+    <div class="readout-grid" id="secondary-flags-grid"></div>
+  </section>
+
+  <div class="instructions" id="section07-panel">
+    <h2>Worked context &mdash; a short ADD/SUB sequence</h2>
+    <p>base=100, fee=25, credit=10. Loading base, adding fee, then subtracting credit gives EAX values 100 &rarr; 125 &rarr; 115. Source memory is unchanged until a store.</p>
+    <pre spellcheck="false"><code>mov eax, 100       ; EAX = 100
+add eax, 25        ; EAX = 125
+sub eax, 10        ; EAX = 115</code></pre>
+  </div>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true">Ready. Default: 8-bit ADD, A=127, B=1, incoming CF=0.</div>
+</main>
+
+<script src="../shared/width-ops.js"></script>
+<script src="../shared/integer-input.js"></script>
+<script src="../shared/arithmetic-model.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

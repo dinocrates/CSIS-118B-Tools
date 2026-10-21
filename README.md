@@ -72,12 +72,43 @@ Run its tests with `node tests\unit-03\run-all.js` (154 checks, including an exh
 
 **Known limitation:** this task's supplied package (`lesson-plan.md`, `interactive-tool-spec.md`, the three `canvas/lecture-NN.html` fragments, the `demos/u03-*.asm` files, `images/`, `scripts/`, `validation.md`, the Design Bible, and the Unit 3 review HTML) was **not present in this repository or session** — only the five standalone prototype HTML files were available as attachments. The five tools, their math modules, and their tests were built directly from this task's own written requirements (control ranges, acceptance tables, and required explanations) and from inspecting the five prototypes, not from the lecture fragments or demo `.asm` files. The `TOOL INSERT LOCATION:` comments described in the task were not found in any file in this repository, so `unit-03/canvas-embeds.html` documents the placement mapping from the task's own instructions but has not verified or edited actual Canvas lecture page content — that part is left to the instructor.
 
+## Unit 4 — Data Movement and Arithmetic
+
+Four standalone tools live under [unit-04/](unit-04/), one folder each (Unit 1/3 style), plus two small supplementary tools that extend two existing Unit 3 tools rather than duplicating them:
+
+| Tool | Folder | What it teaches |
+|------|--------|------------------|
+| Movement instruction lab | [unit-04/movement/](unit-04/movement/) | Curated MOV/XCHG trace scenarios (DWORD memory copy, register exchange, a failed two-MOV "swap", memory exchange through a register, three independent partial-register writes AL/AX/EAX), plus a curated MOV-form legality bank (valid/invalid/ambiguous/storage-overreading) |
+| Arithmetic and flags lab | [unit-04/arithmetic-flags/](unit-04/arithmetic-flags/) | ADD/SUB/INC/DEC/NEG at 8/16/32/64 bits with exact CF/OF/ZF/SF, distinguishing a freshly computed CF from one preserved by INC/DEC, with AF/PF as a secondary reference |
+| Multiplication register-pair lab | [unit-04/multiplication/](unit-04/multiplication/) | One-operand full-product MUL/IMUL into AX / DX:AX / EDX:EAX / RDX:RAX, plus truncated two-/three-operand signed IMUL (not offered at 8-bit); exact 2w-bit products via BigInt |
+| Division preparation lab | [unit-04/division/](unit-04/division/) | Narrow zero/sign-extension (CBW/CWD/CDQ/CQO) or manual high:low dividend preparation, exact DIV/IDIV, and divide-error detection (zero divisor or an out-of-range quotient, including signed-minimum ÷ −1) |
+
+**Supplementary tools (verified reuse, not new homepage tiles):** Unit 3's existing [Byte interpretation and extension](unit-03/byte-interpretation/) and [Storage-layout explorer](unit-03/storage-layout/) tools are the primary reuse for two Unit 4 activities, but each has a real gap against this unit's requirements — inspected directly in their own `app.js`/model files, not assumed:
+- `unit-03/byte-interpretation` is hard-locked to an 8-bit source and two fixed destinations (EDI/RDI); it has no general source-width/destination-width picker and no MOVSXD. [unit-04/extension/](unit-04/extension/) adds exactly that, built on a new `extension-model.js` (not a copy of `byte-extension.js`), and links back to the Unit 3 tool for its interactive bit-toggle UI.
+- `unit-03/storage-layout` has no arbitrary byte-offset+width access independent of element boundaries, and no store simulation. [unit-04/byte-offsets/](unit-04/byte-offsets/) adds both, built directly on top of (via `require`/script tag, not a copy of) `unit-03/shared/storage-layout.js`.
+
+Each tool:
+- Is a single folder with its own `index.html` + `app.js`, plus shared code in [unit-04/shared/](unit-04/shared/) (`styles.css`, `ui-shell.js`, `integer-input.js`, `width-ops.js`, and one pure-math module per concern: `movement-model.js`, `arithmetic-model.js`, `multiplication-model.js`, `division-model.js`, `extension-model.js`, `storage-access-model.js`).
+- Works as a normal full page, **and** supports `?embed=1` for the Canvas iframe mode, same as Units 1–3.
+- Uses BigInt throughout, including exact 64-bit operands and 128-bit products — never `Number`/`parseInt`/floating point on the way to a fixed-width integer. An ordinary operand field accepts a signed decimal spelling or an unsigned bit pattern in the width's union range; a manual dividend half accepts only an unsigned bit pattern.
+- Scopes its dark, shadow-free NASM/table code theme under a `.u04-tool` wrapper class in `unit-04/shared/styles.css`, so it cannot leak into Units 1–3 or the root homepage.
+
+[unit-04/index.html](unit-04/index.html) links all four tools plus the two reuse/supplement pairs. [unit-04/canvas-embeds.html](unit-04/canvas-embeds.html) has the copy-paste iframe snippets and the verified 12-slot lecture-placement table. The root [index.html](index.html) tile grid lists the four new tools (not the two supplementary pages, which are reached from the Unit 4 index/embeds page instead, per this task's instructions).
+
+Run its tests with `node tests\unit-04\run-all.js` (204 checks across eight shared modules). Oracles for the arithmetic/multiplication/division tables are hand-computed from the task's own worked examples, independent of the functions under test — not snapshots of the modules' own output — and include exact arithmetic above `Number.MAX_SAFE_INTEGER` (e.g. a 128-bit unsigned QWORD×QWORD product, and a 64-bit dividend built from a nonzero manual high half).
+
+**Verification performed, and what was not:** `node tests\unit-04\run-all.js` passes (204/204), and the full existing `unit-01`/`unit-02`/`unit-03` suites were re-run and still pass unchanged. A non-browser environment check was also used during development: [tests/unit-04/dom-smoke.js](tests/unit-04/dom-smoke.js) (not wired into `run-all.js`, not a committed test) loads each tool's actual `app.js` and shared scripts into a minimal in-process DOM shim and exercises its buttons/selects/presets, to catch null-reference and wiring bugs without a real browser. **No actual browser was available in the session that built Unit 4**, so actual rendering, CSS layout at narrow widths/200% zoom, real keyboard/screen-reader navigation, and the Canvas iframe embed itself have **not** been exercised and need a human (or browser-automation) pass before relying on them — the same caveat Unit 3's README section already carries for itself.
+
+**Note on `unit-04/byte-offsets`:** this page loads `unit-03/shared/integer-input.js` directly (not `unit-04/shared/integer-input.js`) because it also loads `unit-03/shared/storage-layout.js`, which expects that exact module on `window.CSIS118B.IntegerInput`. Its accepted literal syntax is Unit 3's own (also accepts `0o` octal, and allows a leading `-` on any base), not the slightly stricter Unit 4 lexical contract documented above for the other four tools.
+
 ## Adding a new tool
 
 - **Unit 1 style (recommended for Unit 1 additions):** add a `unit-01/<tool-name>/` folder with its own `index.html` + `app.js`, reuse `unit-01/shared/styles.css` and `ui-shell.js`, add a link on `unit-01/index.html`, add a snippet to `unit-01/canvas-embeds.html`, and add a tile entry to the root `index.html`'s `TOOLS` array.
 - **Unit 3 style (recommended for Unit 3 additions):** add a `unit-03/<tool-name>/` folder with its own `index.html` + `app.js`, wrap the page content in a `<main class="u03-tool">` so it picks up the dark code-block theme, reuse `unit-03/shared/styles.css` and `ui-shell.js`, add a pure-math module under `unit-03/shared/` if the tool needs one (tested under `tests/unit-03/`), add a link on `unit-03/index.html`, add a snippet to `unit-03/canvas-embeds.html`, and add a tile entry to the root `index.html`'s `TOOLS` array.
 - **Unit 2 style (recommended for Unit 2 additions):** add a new tab/section to `unit-02/index.html`, its math to a new `unit-02/shared/*.js` module (loaded by `<script src>`, tested under `tests/unit-02/`), and its DOM wiring to `unit-02/app.js`. Add a snippet to `unit-02/canvas-embeds.html`.
 - **Other / one-off tools:** drop a self-contained HTML file into `visualizers/` and add an entry to the `TOOLS` array near the top of the `<script>` in the root `index.html` (unit, title, file path, embed height, description, demo list). The tile, embed code, and tool count are generated from that entry automatically.
+
+Unit 4 followed the Unit 1/3 one-folder-per-tool style exactly (see the Unit 4 section above), with its own `unit-04/shared/width-ops.js` added for the BigInt width/mask/sign-extend helpers every Unit 4 model needed in common.
 
 ## Running the tests
 
@@ -88,6 +119,7 @@ The math modules have a plain Node test suite (no dependencies, no build step):
 node tests\unit-01\run-all.js
 node tests\unit-02\run-all.js
 node tests\unit-03\run-all.js
+node tests\unit-04\run-all.js
 ```
 
 Unit 1 runs 48 checks across its four shared modules, including an **exhaustive sweep of every 4-bit and 8-bit addition operand pair** (65,792 pairs total) checking the stored result, carry-out, signed overflow, and column-trace consistency against the closed-form formulas — not just the specific acceptance-case numbers. Unit 2 runs 68 checks across its three shared modules: the full instruction trace, the register-alias acceptance/boundary table (including the EAX zero-extension cases), and the ADD/SUB flag acceptance table at 8/16/32/64-bit boundaries. Unit 3 runs 154 checks across its six shared modules, each checked against an independently computed expectation rather than a snapshot of the module's own output — notably an exhaustive sweep of **all 256 byte patterns** for unsigned/signed readings and all three MOVZX/MOVSX extensions, exact boundary checks at every storage width (including the full unsigned 64-bit maximum and signed 64-bit minimum), the complete load–compute–store register/memory trace (including the uint32 wraparound and zero-addend acceptance cases), and byte-table/generated-source agreement for the string tool across its quote-character fallback paths.
@@ -117,11 +149,11 @@ python -m http.server 8080
 npx serve -l 8080
 ```
 
-Opening `unit-01\byte-explorer\index.html` etc. directly as a `file://` URL (double-click, or `start .\unit-01\byte-explorer\index.html`) also works — the tools use plain `<script src>` tags, not ES modules, so they don't hit the `file://` CORS restrictions ES modules run into. A local server is only needed to test the iframe-embedding behavior itself. The same applies to `unit-03\<tool>\index.html` (e.g. `start .\unit-03\memory-trace\index.html`), or browse `http://localhost:8080/unit-03/` once a local server is running.
+Opening `unit-01\byte-explorer\index.html` etc. directly as a `file://` URL (double-click, or `start .\unit-01\byte-explorer\index.html`) also works — the tools use plain `<script src>` tags, not ES modules, so they don't hit the `file://` CORS restrictions ES modules run into. A local server is only needed to test the iframe-embedding behavior itself. The same applies to `unit-03\<tool>\index.html` (e.g. `start .\unit-03\memory-trace\index.html`) and `unit-04\<tool>\index.html` (e.g. `start .\unit-04\movement\index.html`), or browse `http://localhost:8080/unit-03/` / `http://localhost:8080/unit-04/` once a local server is running.
 
 ## Canvas embedding
 
-Open [unit-01/canvas-embeds.html](unit-01/canvas-embeds.html) (Unit 1), [unit-02/canvas-embeds.html](unit-02/canvas-embeds.html) (Unit 2), or [unit-03/canvas-embeds.html](unit-03/canvas-embeds.html) (Unit 3 — locally or on the live site) for:
+Open [unit-01/canvas-embeds.html](unit-01/canvas-embeds.html) (Unit 1), [unit-02/canvas-embeds.html](unit-02/canvas-embeds.html) (Unit 2), [unit-03/canvas-embeds.html](unit-03/canvas-embeds.html) (Unit 3), or [unit-04/canvas-embeds.html](unit-04/canvas-embeds.html) (Unit 4 — locally or on the live site) for:
 - A ready-to-copy `<iframe>` snippet per tool (descriptive `title`, `loading="lazy"`, `width="100%"`, a measured starting `height`, `src` ending in `?embed=1`).
 - A separate-tab fallback link (`target="_blank" rel="noopener"`) under each snippet, for Canvas setups that strip iframes.
 - A live preview of each iframe on the page itself, so you can sanity-check before pasting into Canvas.
@@ -151,8 +183,10 @@ These starting values come from the spec and were sanity-checked by loading each
 
 **Unit 3 starting iframe heights** (from `unit-03/canvas-embeds.html`): Load–compute–store tracer 900px, Storage-layout explorer 900px, Byte interpretation and extension 950px, String bytes and length explorer 900px, Assembler phase workbench 720px. Unlike the Unit 1 heights above, these were **not** sanity-checked in an actual browser in the session that set them — they are reasoned estimates from each page's panel count and content (and, for storage-layout/string-length, from the fact that their byte tables scroll within a fixed-height region rather than growing the page), and should be re-measured against the real rendered page before trusting them in Canvas.
 
+**Unit 4 starting iframe heights** (from `unit-04/canvas-embeds.html`): Movement instruction lab 1300px, Arithmetic and flags lab 1150px, Multiplication register-pair lab 1050px, Division preparation lab 1050px, Byte interpretation and extension (Unit 3 reuse) 950px, Zero/sign extension supplement 1250px, Storage-layout explorer (Unit 3 reuse) 900px, Byte-offsets supplement 1150px. Like the Unit 3 heights, these are reasoned estimates from each page's panel count, **not** measured against an actual rendered browser (none was available in the session that built Unit 4) — re-measure against the real page before trusting them in Canvas.
+
 ## Deployment
 
-GitHub Actions deploys the whole repository (this includes `unit-01/`, `unit-02/`, and `unit-03/`) to GitHub Pages on every push to `main` — see [.github/workflows/pages.yml](.github/workflows/pages.yml). No changes were needed to the existing workflow for Unit 3; it already publishes the full repo root, and the workflow's only required-file check (`index.html` at the repo root) is unaffected by these additions.
+GitHub Actions deploys the whole repository (this includes `unit-01/`, `unit-02/`, `unit-03/`, and `unit-04/`) to GitHub Pages on every push to `main` — see [.github/workflows/pages.yml](.github/workflows/pages.yml). No changes were needed to the existing workflow for Unit 4; it already publishes the full repo root, and the workflow's only required-file check (`index.html` at the repo root) is unaffected by these additions.
 
 In the GitHub repository, **Settings → Pages → Build and deployment** should have **Source** set to **GitHub Actions**.

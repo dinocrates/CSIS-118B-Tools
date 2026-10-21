@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4 Tools &mdash; CSIS 118B</title>
+<link rel="stylesheet" href="shared/styles.css">
+</head>
+<body>
+<main class="u04-tool">
+  <div class="course-header">
+    <span>CSIS 118B &middot; Computer Organization &amp; Assembly</span>
+    <a href="../index.html">&larr; All CSIS 118B tools</a>
+  </div>
+
+  <div class="tool-header">
+    <h1>Unit 4 &mdash; Data Movement and Arithmetic</h1>
+    <p class="tool-sub">Four new standalone tools, plus two verified-reuse pages built on top of Unit 3's existing models. Each works on its own page and can also be embedded in a Canvas page with <code>?embed=1</code>.</p>
+  </div>
+
+  <section class="panel">
+    <h2>Movement instruction lab</h2>
+    <p class="tool-sub">Step curated MOV/XCHG trace scenarios (memory copy, register exchange, a failed two-MOV "swap", memory exchange through a register, and three partial-register writes), plus a curated MOV-form legality bank. Lecture placement: Data Movement, U04-01/02/03/05.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="movement/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Arithmetic and flags lab</h2>
+    <p class="tool-sub">ADD/SUB/INC/DEC/NEG at 8/16/32/64 bits with exact CF/OF/ZF/SF, and AF/PF as a secondary reference. Lecture placement: Arithmetic, U04-07/08/09/10.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="arithmetic-flags/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Multiplication register-pair lab</h2>
+    <p class="tool-sub">One-operand full-product MUL/IMUL and truncated two-/three-operand IMUL, with exact 2w-bit products and the CF/OF overflow rule. Lecture placement: Arithmetic, U04-11/12.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="multiplication/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Division preparation lab</h2>
+    <p class="tool-sub">Narrow-value or manual high:low dividend preparation, exact DIV/IDIV, and divide-error detection (zero divisor or an out-of-range quotient). Lecture placement: Arithmetic, U04-13/14/15.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="division/index.html">Open tool</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Zero/sign extension across widths (verified reuse + fallback)</h2>
+    <p class="tool-sub">Unit 3's <a href="../unit-03/byte-interpretation/index.html">Byte interpretation and extension</a> tool is the primary reuse for the single fixed-byte, bit-toggle case. It does not offer a general source/destination width picker or MOVSXD, so this page adds that as a small supporting tool, built on the same ideas. Lecture placement: Data Movement, U04-04.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="../unit-03/byte-interpretation/index.html">Open Unit 3 tool (primary)</a>
+      <a class="btn" href="extension/index.html">Open Unit 4 supplement</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Byte offsets, arbitrary access, and store (verified reuse + fallback)</h2>
+    <p class="tool-sub">Unit 3's <a href="../unit-03/storage-layout/index.html">Storage-layout explorer</a> is the primary reuse for width/initializer selection and an element's byte offset. It does not offer an arbitrary offset+width access independent of element boundaries, or a store simulation, so this page adds those directly on top of the Unit 3 model (not a duplicate). Lecture placement: Data Movement, U04-06.</p>
+    <div class="btn-row">
+      <a class="btn primary" href="../unit-03/storage-layout/index.html">Open Unit 3 tool (primary)</a>
+      <a class="btn" href="byte-offsets/index.html">Open Unit 4 supplement</a>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>For instructors</h2>
+    <p class="tool-sub">Copyable Canvas iframe embed codes, separate-tab fallback links, and the verified 12-slot lecture-placement table are on the <a href="canvas-embeds.html">Canvas embeds page</a>.</p>
+  </section>
+
+</main>
+</body>
+</html>

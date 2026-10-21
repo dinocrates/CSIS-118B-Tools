@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Division Preparation Lab &mdash; CSIS 118B Unit 4</title>
+<link rel="stylesheet" href="../shared/styles.css">
+</head>
+<body>
+<main class="u04-tool">
+  <div class="tool-header">
+    <h1>Division preparation lab</h1>
+    <p class="tool-sub">Prepare a 2&times;-width dividend (narrow zero/sign-extension, or a manual high:low pair) and divide with DIV or IDIV.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>How to use this tool</h2>
+    <ul>
+      <li>Choose <strong>Narrow value</strong> to zero-extend (DIV/CBW-CWD-CDQ-CQO family) or sign-extend (IDIV) a single narrow value into the full dividend pair.</li>
+      <li>Choose <strong>Manual high:low</strong> to type both halves of the dividend pair directly as unsigned bit patterns &mdash; this is concatenation, not division.</li>
+      <li>A zero divisor or an out-of-range quotient is a <strong>Divide error</strong>: no quotient/remainder is produced, and any previous result is cleared.</li>
+    </ul>
+  </div>
+
+  <section class="panel" aria-labelledby="setup-h">
+    <h2 id="setup-h">Set up the division</h2>
+    <div class="controls-row">
+      <div class="field">
+        <label for="width-select">Divisor width</label>
+        <select id="width-select">
+          <option value="8">8-bit</option>
+          <option value="16">16-bit</option>
+          <option value="32" selected>32-bit</option>
+          <option value="64">64-bit</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="op-select">Interpretation</label>
+        <select id="op-select">
+          <option value="unsigned" selected>Unsigned (DIV)</option>
+          <option value="signed">Signed (IDIV)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="prep-select">Dividend preparation</label>
+        <select id="prep-select">
+          <option value="narrow" selected>Narrow value (zero/sign-extend)</option>
+          <option value="manual">Manual high:low bits</option>
+        </select>
+      </div>
+    </div>
+    <div class="controls-row">
+      <div class="field" id="narrow-field">
+        <label for="narrow-input">Narrow dividend (value or bit pattern)</label>
+        <input type="text" id="narrow-input" value="25">
+      </div>
+      <div class="field" id="high-field" style="display:none;">
+        <label for="high-input">High half (unsigned bit pattern)</label>
+        <input type="text" id="high-input" value="0">
+      </div>
+      <div class="field" id="low-field" style="display:none;">
+        <label for="low-input">Low half (unsigned bit pattern)</label>
+        <input type="text" id="low-input" value="25">
+      </div>
+      <div class="field">
+        <label for="divisor-input">Divisor (value or bit pattern)</label>
+        <input type="text" id="divisor-input" value="12">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn primary" id="reveal-btn">Prepare and divide</button>
+      <button type="button" class="btn" id="reset-btn">Reset to default</button>
+    </div>
+    <p class="error-text" id="input-error" role="alert"></p>
+  </section>
+
+  <section class="panel" aria-labelledby="preset-h">
+    <h2 id="preset-h">Presets</h2>
+    <div class="preset-row" role="group" aria-label="Division presets" id="preset-row"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="code-h">
+    <h2 id="code-h">Instruction snippet</h2>
+    <pre spellcheck="false"><code id="code-block" spellcheck="false"></code></pre>
+    <p class="scope-note">Instruction snippet &mdash; one instruction in isolation, not a complete program.</p>
+  </section>
+
+  <section class="panel" aria-labelledby="prep-h">
+    <h2 id="prep-h">Prepared input register pair</h2>
+    <div class="readout-grid" id="prep-grid"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="result-h">
+    <h2 id="result-h">Division result</h2>
+    <div class="readout-grid" id="result-grid"></div>
+    <div class="explain-box" id="result-explain" aria-live="polite"></div>
+  </section>
+
+  <section class="panel" aria-labelledby="flags-h">
+    <h2 id="flags-h">Flags</h2>
+    <p class="tool-sub" style="margin:0 0 0.5rem;">All six flags are <strong>undefined</strong> after a successful DIV/IDIV. A divide error is not reported through a flag.</p>
+    <div class="readout-grid" id="flags-grid"></div>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite" aria-atomic="true">Ready. Default: DWORD DIV, narrow mode, dividend=25, divisor=12.</div>
+</main>
+
+<script src="../shared/width-ops.js"></script>
+<script src="../shared/integer-input.js"></script>
+<script src="../shared/division-model.js"></script>
+<script src="../shared/ui-shell.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canvas Embeds &mdash; Unit 4 &mdash; CSIS 118B</title>
+<link rel="stylesheet" href="shared/styles.css">
+<style>
+  .embed-code {
+    background: #2b2b2b;
+    color: #f8f8f2;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    white-space: pre-wrap;
+    word-break: break-word;
+    padding: 0.8rem 0.9rem;
+    border-radius: 6px;
+    margin: 0.5rem 0;
+    border: 1px solid #555;
+  }
+  .preview-frame {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-top: 0.5rem;
+  }
+</style>
+</head>
+<body>
+<main class="u04-tool">
+  <div class="course-header">
+    <span>CSIS 118B &middot; Computer Organization &amp; Assembly</span>
+    <a href="index.html">&larr; Unit 4 tools index</a>
+  </div>
+
+  <div class="tool-header">
+    <h1>Canvas Embeds &mdash; Unit 4</h1>
+    <p class="tool-sub">Copy an iframe snippet into the Canvas Rich Content Editor's HTML view, or use the fallback link if a Canvas page strips iframes.</p>
+  </div>
+
+  <div class="instructions">
+    <h2>Published base URL and deployment status</h2>
+    <p id="base-url-line" style="font-family:Consolas,monospace;"></p>
+    <p class="tool-sub" style="margin:0.4rem 0 0;">
+      This matches the base URL recorded in the repository's README (<code>https://dinocrates.github.io/CSIS-118B-Tools/</code>), the same
+      GitHub Pages site Units 1&ndash;3 already publish to. <strong>These Unit 4 paths are proposed / not yet deployed</strong> &mdash; they exist on
+      this feature branch only, until it is reviewed and merged to <code>main</code> and the Pages workflow runs. Do not treat any link
+      below as live before checking the deployed site.
+    </p>
+    <p class="tool-sub" style="margin:0.4rem 0 0;">
+      Iframe heights below are estimated from each page's content, not measured against a rendered browser in this environment &mdash;
+      treat them as a starting point and adjust after the first real embed in Canvas.
+    </p>
+  </div>
+
+  <section class="panel" id="tool-movement">
+    <h2>1. Movement instruction lab <span class="tool-sub">(starting height 1300px)</span></h2>
+    <p class="tool-sub">Lecture placement: Data Movement, U04-01/02/03/05. Insertion labels: <code>TOOL INSERT LOCATION: tool-u04-01</code>, <code>tool-u04-03</code>, <code>tool-u04-05</code> (same tool, three insertion points).</p>
+    <pre class="embed-code" id="code-movement"></pre>
+    <button type="button" class="btn" data-copy="code-movement">Copy embed code</button>
+  </section>
+
+  <section class="panel" id="tool-arithmetic-flags">
+    <h2>2. Arithmetic and flags lab <span class="tool-sub">(starting height 1150px)</span></h2>
+    <p class="tool-sub">Lecture placement: Arithmetic, U04-07/08/09/10. Insertion labels: <code>tool-u04-08</code>, <code>tool-u04-10</code> (also supports U04-07/09, which have no separate slot).</p>
+    <pre class="embed-code" id="code-arithmetic-flags"></pre>
+    <button type="button" class="btn" data-copy="code-arithmetic-flags">Copy embed code</button>
+  </section>
+
+  <section class="panel" id="tool-multiplication">
+    <h2>3. Multiplication register-pair lab <span class="tool-sub">(starting height 1050px)</span></h2>
+    <p class="tool-sub">Lecture placement: Arithmetic, U04-11/12. Insertion label: <code>tool-u04-11</code> (same tool for U04-12).</p>
+    <pre class="embed-code" id="code-multiplication"></pre>
+    <button type="button" class="btn" data-copy="code-multiplication">Copy embed code</button>
+  </section>
+
+  <section class="panel" id="tool-division">
+    <h2>4. Division preparation lab <span class="tool-sub">(starting height 1050px)</span></h2>
+    <p class="tool-sub">Lecture placement: Arithmetic, U04-13/14/15. Insertion label: <code>tool-u04-13</code> (same tool for U04-14; the "DWORD DIV manual high=1,low=0,divisor=2" preset doubles as a product-pair worked case for U04-15).</p>
+    <pre class="embed-code" id="code-division"></pre>
+    <button type="button" class="btn" data-copy="code-division">Copy embed code</button>
+  </section>
+
+  <section class="panel" id="tool-byte-interpretation">
+    <h2>5. Zero/sign extension (Unit 3 reuse, primary) <span class="tool-sub">(starting height 950px)</span></h2>
+    <p class="tool-sub">Lecture placement: Data Movement, U04-04. Insertion label: <code>tool-u04-04</code>. This is the existing Unit 3 tool, reused as-is.</p>
+    <pre class="embed-code" id="code-byte-interpretation"></pre>
+    <button type="button" class="btn" data-copy="code-byte-interpretation">Copy embed code</button>
+  </section>
+
+  <section class="panel" id="tool-extension">
+    <h2>5b. Zero/sign extension across widths (Unit 4 supplement) <span class="tool-sub">(starting height 1250px)</span></h2>
+    <p class="tool-sub">Optional second embed for U04-04 if the lecture wants the general width picker and MOVSXD alongside the Unit 3 tool above.</p>
+    <pre class="embed-code" id="code-extension"></pre>
+    <button type="button" class="btn" data-copy="code-extension">Copy embed code</button>
+  </section>
+
+  <section class="panel" id="tool-storage-layout">
+    <h2>6. Direct byte offsets (Unit 3 reuse, primary) <span class="tool-sub">(starting height 900px)</span></h2>
+    <p class="tool-sub">Lecture placement: Data Movement, U04-06. Insertion label: <code>tool-u04-06</code>. This is the existing Unit 3 tool, reused as-is.</p>
+    <pre class="embed-code" id="code-storage-layout"></pre>
+    <button type="button" class="btn" data-copy="code-storage-layout">Copy embed code</button>
+  </section>
+
+  <section class="panel" id="tool-byte-offsets">
+    <h2>6b. Byte offsets, arbitrary access, and store (Unit 4 supplement) <span class="tool-sub">(starting height 1150px)</span></h2>
+    <p class="tool-sub">Optional second embed for U04-06 if the lecture wants an arbitrary offset/width access and the store simulation alongside the Unit 3 tool above.</p>
+    <pre class="embed-code" id="code-byte-offsets"></pre>
+    <button type="button" class="btn" data-copy="code-byte-offsets">Copy embed code</button>
+  </section>
+
+  <section class="panel">
+    <h2>12-slot lecture placement table</h2>
+    <p class="tool-sub">Verified against the insertion-label mapping supplied with this task. The same hosted tool can be embedded at more than one insertion point.</p>
+    <div class="table-scroll">
+      <table class="trace-table">
+        <caption>Canvas page &middot; section &middot; insertion slot &rarr; tool</caption>
+        <thead><tr><th scope="col">Canvas page</th><th scope="col">Section</th><th scope="col">Insertion slot</th><th scope="col">Tool</th></tr></thead>
+        <tbody>
+          <tr><td>Data Movement</td><td>U04-01 &middot; Operand types</td><td>tool-u04-01</td><td>Movement lab</td></tr>
+          <tr><td>Data Movement</td><td>U04-02 &middot; MOV rules</td><td>(no separate slot)</td><td>Movement lab legality bank</td></tr>
+          <tr><td>Data Movement</td><td>U04-03 &middot; Partial-register writes</td><td>tool-u04-03</td><td>Movement lab</td></tr>
+          <tr><td>Data Movement</td><td>U04-04 &middot; Zero/sign extension</td><td>tool-u04-04</td><td>Unit 3 byte-interpretation (+ Unit 4 supplement)</td></tr>
+          <tr><td>Data Movement</td><td>U04-05 &middot; XCHG</td><td>tool-u04-05</td><td>Movement lab</td></tr>
+          <tr><td>Data Movement</td><td>U04-06 &middot; Direct byte offsets</td><td>tool-u04-06</td><td>Unit 3 storage-layout (+ Unit 4 supplement)</td></tr>
+          <tr><td>Arithmetic</td><td>U04-07 &middot; ADD/SUB</td><td>(no separate slot)</td><td>Arithmetic lab</td></tr>
+          <tr><td>Arithmetic</td><td>U04-08 &middot; INC/DEC/NEG</td><td>tool-u04-08</td><td>Arithmetic/flags lab</td></tr>
+          <tr><td>Arithmetic</td><td>U04-09 &middot; ZF/SF</td><td>(no separate slot)</td><td>Arithmetic lab</td></tr>
+          <tr><td>Arithmetic</td><td>U04-10 &middot; CF/OF</td><td>tool-u04-10</td><td>Arithmetic/flags lab</td></tr>
+          <tr><td>Arithmetic</td><td>U04-11 &middot; MUL</td><td>tool-u04-11</td><td>Multiplication lab</td></tr>
+          <tr><td>Arithmetic</td><td>U04-12 &middot; IMUL</td><td>tool-u04-12</td><td>Multiplication lab</td></tr>
+          <tr><td>Arithmetic</td><td>U04-13 &middot; DIV</td><td>tool-u04-13</td><td>Division lab</td></tr>
+          <tr><td>Arithmetic</td><td>U04-14 &middot; IDIV</td><td>tool-u04-14</td><td>Division lab</td></tr>
+          <tr><td>Arithmetic</td><td>U04-15 &middot; Worked expression</td><td>tool-u04-15</td><td>Division lab / product-pair worked preset</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tool-sub" style="margin:0.6rem 0 0;">As with Unit 3's own embed page: the two Canvas lecture pages that are supposed to carry these
+      <code>TOOL INSERT LOCATION:</code> comments were not available in this repository or session, so the actual comment text inside those
+      lecture pages has not been inspected or edited &mdash; only this mapping has been verified against this task's own placement list.
+      Leave the Canvas editing itself to the instructor.</p>
+  </section>
+
+  <div class="status-line" id="status-line" role="status" aria-live="polite"></div>
+  <div class="tool-footer">CSIS 118B &middot; Unit 4 Canvas embed snippets.</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+
+  // Matches the base URL recorded in README.md for this repository's GitHub Pages site.
+  // Unit 4 paths are proposed / not yet deployed (see the note above) until merged to main.
+  var BASE = 'https://dinocrates.github.io/CSIS-118B-Tools/';
+
+  var TOOLS = [
+    { key: 'movement', path: 'unit-04/movement/', title: 'Movement instruction lab', height: 1300 },
+    { key: 'arithmetic-flags', path: 'unit-04/arithmetic-flags/', title: 'Arithmetic and flags lab', height: 1150 },
+    { key: 'multiplication', path: 'unit-04/multiplication/', title: 'Multiplication register-pair lab', height: 1050 },
+    { key: 'division', path: 'unit-04/division/', title: 'Division preparation lab', height: 1050 },
+    { key: 'byte-interpretation', path: 'unit-03/byte-interpretation/', title: 'Byte interpretation and extension (Unit 3)', height: 950 },
+    { key: 'extension', path: 'unit-04/extension/', title: 'Zero/sign extension across widths (Unit 4 supplement)', height: 1250 },
+    { key: 'storage-layout', path: 'unit-03/storage-layout/', title: 'Storage-layout explorer (Unit 3)', height: 900 },
+    { key: 'byte-offsets', path: 'unit-04/byte-offsets/', title: 'Byte offsets, arbitrary access, and store (Unit 4 supplement)', height: 1150 }
+  ];
+
+  document.getElementById('base-url-line').textContent = BASE;
+
+  TOOLS.forEach(function (tool) {
+    var fullUrl = BASE + tool.path;
+    var embedSrc = fullUrl + '?embed=1';
+    var snippet =
+      '<iframe src="' + embedSrc + '"\n' +
+      '        width="100%" height="' + tool.height + '"\n' +
+      '        loading="lazy"\n' +
+      '        style="border:none;"\n' +
+      '        title="' + tool.title + '"></iframe>\n' +
+      '<p><a href="' + fullUrl + '" target="_blank" rel="noopener">Open ' + tool.title + ' in a separate page</a></p>';
+
+    var codeEl = document.getElementById('code-' + tool.key);
+    if (codeEl) codeEl.textContent = snippet;
+  });
+
+  var statusLine = document.getElementById('status-line');
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = document.getElementById(btn.getAttribute('data-copy')).textContent;
+      function done() {
+        statusLine.textContent = 'Copied embed code for ' + btn.closest('section').querySelector('h2').textContent.trim() + '.';
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+      } else {
+        fallbackCopy(text, done);
+      }
+    });
+  });
+
+  function fallbackCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); }
+    catch (e) { statusLine.textContent = 'Copy failed — select the code and copy manually.'; }
+    document.body.removeChild(ta);
+  }
+})();
+</script>
+</body>
+</html>
