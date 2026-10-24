@@ -524,6 +524,18 @@ var TOOLS = [
       { sig: 'Digits of 1200', what: 'successive remainders 0, 0, 2, 1 sum to 3' },
     ],
   },
+  {
+    unit: 'UNIT 10 - ARRAY ADDRESSES',
+    title: 'Array Index and Address Explorer',
+    file: 'unit-10/array-address/index.html',
+    embedHeight: 2800,
+    desc: 'Predict bounds and loads across 1/2/4/8-byte elements. Connect base, scaled index, little-endian bytes and exact signed or unsigned interpretation.',
+    demos: [
+      { sig: 'DWORD -4 at index 0', what: 'FC FF FF FF represents signed -4 or unsigned 4294967292' },
+      { sig: 'WORD index 1', what: 'index 1 means byte offset 2, not index 2' },
+      { sig: 'Empty active prefix', what: 'reject the index without a selected address or load' },
+    ],
+  },
 ];
 
 // ─── embed URL: resolve against where this page is actually hosted ──────────

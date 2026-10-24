@@ -1,0 +1,2 @@
+/* Established course palette/focus rules are inherited unchanged. */
+#layout table{min-width:1050px}#layout{border:1px solid #E3E5E6;max-height:430px}#layout thead th{position:sticky;top:0}.selected td{font-weight:700;background:#fff1f1}.inactive td{background:#F5F6F6}#formula,#extension,#decision{overflow-wrap:anywhere}#value-prediction{max-width:520px}#presets button{padding:8px 12px}

@@ -1,0 +1,13 @@
+'use strict';const M=require('../../unit-10/shared/array-model.js');let count=0;
+function check(ok,msg){if(!ok)throw Error(msg);count++;}
+function verify(value,width){const e=M.element(value,width);let rebuilt=0n;for(let i=0;i<width;i++)rebuilt+=BigInt(e.bytes[i])*(256n**BigInt(i));check(rebuilt===e.unsigned,'little-endian reconstruction');check(e.signed===(e.unsigned>=(1n<<BigInt(width*8-1))?e.unsigned-(1n<<BigInt(width*8)):e.unsigned),'signed interpretation');check(e.bytes.length===width&&e.bytes.every(b=>b>=0&&b<=255),'byte bounds');check(BigInt.asUintN(width*8,e.signed)===e.unsigned,'signed bit identity');}
+for(let n=0n;n<256n;n++)verify(n,1);for(let n=0n;n<65536n;n++)verify(n,2);
+for(const w of [1,2,4,8]){const bits=BigInt(w*8),min=-(1n<<(bits-1n)),max=(1n<<bits)-1n;for(const v of [min,-4n,-1n,0n,1n,(1n<<(bits-1n))-1n,1n<<(bits-1n),max])verify(v,w);
+ for(let length=0;length<=5;length++)for(const index of [-1,0,1,4,5]){const t=M.explore({width:w,base:'0x1000',values:'-4,7,-4,0,2',length:String(length),index:String(index)});check(t.valid===(index>=0&&index<length),'active bounds');check(t.rows.every((r,i)=>r.offset===BigInt(i*w)&&r.address===4096n+BigInt(i*w)),'scaled address');check(t.rows.every((r,i)=>r.active===(i<length)),'active prefix');if(t.valid)check(t.selected.value===BigInt([-4,7,-4,0,2][index]),'selected element');else check(t.selected===null,'rejected means no load');}
+ let rejected=false;try{M.element(min-1n,w);}catch{rejected=true;}check(rejected,'below signed domain');rejected=false;try{M.element(max+1n,w);}catch{rejected=true;}check(rejected,'above unsigned domain');
+ const atTop=M.explore({width:w,base:String((1n<<64n)-BigInt(w)),values:'1',length:'1',index:'0'});check(atTop.selected.address+BigInt(w)-1n===(1n<<64n)-1n,'last allocated byte at u64 max');
+}
+const base={width:4,base:'0x1000',values:'-4,7,-4,0,2',length:'5',index:'0'};
+for(const change of [{width:3},{values:''},{values:'1,2,3,4,5,6,7,8,9'},{values:'1.5'},{values:'4294967296'},{base:'-1'},{base:'18446744073709551616'},{base:'18446744073709551615'},{length:'6'},{length:'-1'},{index:'9223372036854775808'},{index:'1e2'},{index:'0x'},{values:'1+1'}]){let rejected=false;try{M.explore({...base,...change});}catch{rejected=true;}check(rejected,'invalid input '+JSON.stringify(change));}
+check(M.explore({...base,width:8,values:'9007199254740993',length:'1'}).selected.unsigned===9007199254740993n,'above Number precision');check(M.explore({...base,values:'0xFFFFFFFF',length:'1'}).selected.signed===-1n,'hex bit pattern');
+console.log(count+' assertions passed: exhaustive BYTE/WORD endian interpretations, all widths and active bounds, signed64/QWORD boundaries, invalid inputs.');
