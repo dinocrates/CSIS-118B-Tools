@@ -1,0 +1,2 @@
+/* Existing course styling is inherited without changing earlier tools. */
+#history{max-height:360px;border:1px solid #E3E5E6}#history table{min-width:620px}#history th{position:sticky;top:0}#history tr:last-child td{font-weight:700;background:#F5F6F6}#action,#next{overflow-wrap:anywhere}#state-heading+.path{font-weight:700}button:disabled{opacity:.55;cursor:default}
