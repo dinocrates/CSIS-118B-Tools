@@ -194,3 +194,7 @@ In the GitHub repository, **Settings → Pages → Build and deployment** should
 ## Unit 11 address grid
 
 `unit-11/grid-address/index.html` models packed row-major grids with 0–4 rows and columns, 1/2/4/8-byte signed elements, exact BigInt offsets and unsigned 64-bit illustrative addresses. No memory access or code execution. Tests: `node tests/unit-11/grid-address.test.cjs`. Native labeled controls and keyboard-selectable cell buttons connect grid and linear views; prediction/reveal/reset controls separate exploration from feedback.
+
+## Unit 14 structure layout
+
+`unit-14/structure-layout/index.html` models zero to six fields, explicit padding, two simulated instances, BYTE/WORD/DWORD/QWORD values and eight inline bytes. Exact BigInt address/value arithmetic rejects overflow and invalid field values. The P101 Gauge preset demonstrates that NASM does not automatically pad fields; an empty definition has no addressable bytes. Prediction/reveal/reset, native labeled controls, selectable instance fields and live status text support keyboard use. No memory access, code execution or macro parser. Tests: `node tests/unit-14/structure-layout.test.cjs`. Use `?embed=1` for Canvas; the initial 3600px height fits the desktop preset, with scrolling available for larger/narrow layouts.
