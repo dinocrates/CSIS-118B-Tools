@@ -198,3 +198,9 @@ In the GitHub repository, **Settings → Pages → Build and deployment** should
 ## Unit 14 structure layout
 
 `unit-14/structure-layout/index.html` models zero to six fields, explicit padding, two simulated instances, BYTE/WORD/DWORD/QWORD values and eight inline bytes. Exact BigInt address/value arithmetic rejects overflow and invalid field values. The P101 Gauge preset demonstrates that NASM does not automatically pad fields; an empty definition has no addressable bytes. Prediction/reveal/reset, native labeled controls, selectable instance fields and live status text support keyboard use. No memory access, code execution or macro parser. Tests: `node tests/unit-14/structure-layout.test.cjs`. Use `?embed=1` for Canvas; the initial 3600px height fits the desktop preset, with scrolling available for larger/narrow layouts.
+
+## Unit 15 - Virtual File Cursor Explorer
+
+[Open the tool](unit-15/file-cursor/index.html). A bounded teaching simulation of one synthetic regular file: open/read/write/append/truncate/close, descriptor cursors, actual counts, NUL/CRLF bytes, EOF and negative errors. Predict/reveal/step/reset; optional explicitly simulated partial-write cap. No host files, network, persistence or arbitrary execution. Supports ?embed=1.
+
+Pure model: unit-15/file-cursor/model.js; DOM: app.js. Run node tests/unit-15/file-cursor.test.cjs (88,541 assertions). Counts/indices are bounded safe integers, at most 32 file bytes and four descriptors. Standard streams, interrupted/nonblocking operations and real file permissions are outside this model.
