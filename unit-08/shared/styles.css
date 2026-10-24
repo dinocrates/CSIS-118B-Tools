@@ -1,0 +1,2 @@
+/* Inherit the established palette, focus and responsive controls. */
+#history{max-height:360px;border:1px solid #E3E5E6}#history table{min-width:800px}#history th{position:sticky;top:0}#history tr:last-child td{font-weight:700;background:#F5F6F6}#action,#division,#next{overflow-wrap:anywhere}#presets button{padding:7px 12px}
