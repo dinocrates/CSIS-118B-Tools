@@ -488,6 +488,18 @@ var TOOLS = [
       { sig: 'TEST byte 10, 5', what: 'no shared set bits: ZF=1, CF=OF=0, AF undefined' },
     ],
   },
+    {
+      unit: 'UNIT 6 - CONDITIONAL DECISIONS',
+      title: 'Decision and Control-Flow Tracer',
+      file: 'unit-06/decision-tracer/index.html',
+      embedHeight: 2600,
+      desc: 'Predict and step through two-way choices, ordered alternatives, and short-circuit AND / OR. See executed and skipped comparisons with exact signed 64-bit inputs.',
+      demos: [
+        { sig: 'AND: x = 0', what: 'the failed lower bound skips the upper comparison' },
+        { sig: 'OR: x = 10', what: 'both outside checks are false at the inclusive boundary' },
+        { sig: 'Grade: c', what: 'the first matching alternative selects the message' },
+      ],
+    },
 ];
 
 // ─── embed URL: resolve against where this page is actually hosted ──────────

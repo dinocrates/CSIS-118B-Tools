@@ -1,0 +1,2 @@
+/* Unit 6 additions; shared course palette/layout comes from unchanged Unit 5 CSS. */
+.trace-code{background:#2b2b2b;color:#f8f8f2;font:15px/1.65 Consolas,monospace;white-space:pre;padding:8px;display:block;border-radius:4px}.trace-code .op{color:#ffa07a}.executed td:first-child{border-left:4px solid #B2292E}.skipped{background:#F5F6F6}.state{font-weight:700}.state small{display:block;font-weight:400}#trace table{min-width:740px}#flags{overflow-wrap:anywhere}#presets button{padding:7px 12px}
