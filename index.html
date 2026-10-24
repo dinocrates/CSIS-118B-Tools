@@ -476,6 +476,18 @@ var TOOLS = [
       { sig: 'DWORD DIV manual high=1, low=0, divisor=2', what: 'full dividend 4294967296 → quotient 2147483648, remainder 0' },
     ],
   },
+  {
+    unit: 'UNIT 5 - BRANCH DECISIONS',
+    title: 'CMP / TEST and Branch Decisions',
+    file: 'unit-05/branch-decisions/index.html',
+    embedHeight: 2300,
+    desc: 'Predict a conditional jump from exact 8/16/32/64-bit CMP or TEST flags. Compare signed and unsigned interpretations while both operands stay unchanged.',
+    demos: [
+      { sig: 'CMP byte 255, 1', what: 'JL is taken but JB is not: the same bits answer different questions' },
+      { sig: 'CMP byte -128, 1', what: 'signed overflow explains why JL uses SF != OF' },
+      { sig: 'TEST byte 10, 5', what: 'no shared set bits: ZF=1, CF=OF=0, AF undefined' },
+    ],
+  },
 ];
 
 // ─── embed URL: resolve against where this page is actually hosted ──────────
