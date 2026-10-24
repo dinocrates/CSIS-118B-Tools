@@ -190,3 +190,7 @@ These starting values come from the spec and were sanity-checked by loading each
 GitHub Actions deploys the whole repository (this includes `unit-01/`, `unit-02/`, `unit-03/`, and `unit-04/`) to GitHub Pages on every push to `main` — see [.github/workflows/pages.yml](.github/workflows/pages.yml). No changes were needed to the existing workflow for Unit 4; it already publishes the full repo root, and the workflow's only required-file check (`index.html` at the repo root) is unaffected by these additions.
 
 In the GitHub repository, **Settings → Pages → Build and deployment** should have **Source** set to **GitHub Actions**.
+
+## Unit 11 address grid
+
+`unit-11/grid-address/index.html` models packed row-major grids with 0–4 rows and columns, 1/2/4/8-byte signed elements, exact BigInt offsets and unsigned 64-bit illustrative addresses. No memory access or code execution. Tests: `node tests/unit-11/grid-address.test.cjs`. Native labeled controls and keyboard-selectable cell buttons connect grid and linear views; prediction/reveal/reset controls separate exploration from feedback.
