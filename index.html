@@ -537,6 +537,7 @@ var TOOLS = [
     ],
   },
   { unit: 'UNIT 11 - TWO-DIMENSIONAL ARRAYS', title: '2D Array Address Grid', file: 'unit-11/grid-address/index.html', embedHeight: 2600, desc: 'Check each coordinate, predict row stride and byte offsets, and connect a row-major grid to linear memory with exact signed values.', demos: [{sig:'Row 1, column 1',what:'2 by 3 DWORD grid: offset 16, value -2'},{sig:'Invalid column',what:'Reject (0,3) even if its flattened index fits the allocation'}] },
+  { unit: 'UNIT 12 - SIMPLE PROCEDURES', title: 'CALL and RET Tracer', file: 'unit-12/call-tracer/index.html', embedHeight: 2300, desc: 'Step through return addresses, caller alignment, leaf and non-leaf calls, and saved versus volatile registers.', demos: [{sig:'Balanced calls',what:'Save R12, print a square, and restore the original stack'},{sig:'Missing padding',what:'Predict the guarded misaligned helper call'}] },
 ];
 
 // ─── embed URL: resolve against where this page is actually hosted ──────────
