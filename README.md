@@ -204,3 +204,7 @@ In the GitHub repository, **Settings → Pages → Build and deployment** should
 [Open the tool](unit-15/file-cursor/index.html). A bounded teaching simulation of one synthetic regular file: open/read/write/append/truncate/close, descriptor cursors, actual counts, NUL/CRLF bytes, EOF and negative errors. Predict/reveal/step/reset; optional explicitly simulated partial-write cap. No host files, network, persistence or arbitrary execution. Supports ?embed=1.
 
 Pure model: unit-15/file-cursor/model.js; DOM: app.js. Run node tests/unit-15/file-cursor.test.cjs (88,541 assertions). Counts/indices are bounded safe integers, at most 32 file bytes and four descriptors. Standard streams, interrupted/nonblocking operations and real file permissions are outside this model.
+
+## Unit 16 - Binary64 Explorer
+
+unit-16/binary64/index.html uses DataView for exact encodings and BigInt for exact finite rationals/decimal expansions. Includes decimal/addition/hex inputs, signed zero, subnormals, infinity/NaN, adjacent values, separate gap sizes, prediction/reveal/reset and lecture adapter display limits. No arbitrary execution or network calls. JavaScript decimal conversion/arithmetic is binary64, not exact decimal arithmetic; no signaling-NaN exception simulation. Supports ?embed=1. Tests: node tests/unit-16/binary64.test.cjs (116,302 assertions).
